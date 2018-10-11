@@ -20,6 +20,9 @@ public class Usuario extends ParentEntity  {
 	
 	@Column(name = "password", nullable = false, length = 45)
 	private String password;
+	
+	@Column(name = "tipo", nullable = false, length= 7)
+	private String tipo;
 
 	public String getUsername() {
 		return username;
@@ -47,15 +50,22 @@ public class Usuario extends ParentEntity  {
         if (!(o instanceof Usuario)) { 
             return false; 
         } 
-          
-        // typecast o to Complex so that we can compare data members  
+
         Usuario c = (Usuario) o; 
         
-        if(this.getPassword().equals(c.getPassword()) && this.getUsername().equals(c.getUsername()))
-        	return true;
-        	
-          
+        if(	this.getPassword().equals(c.getPassword())
+        		&& this.getUsername().equals(c.getUsername()))
+        			return true;
+        
         return false; 
-    } 
+    }
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	} 
 	
 }
