@@ -18,6 +18,7 @@ import com.equivalencia.equivalenciaBE.Model.UsuarioTipo;
 import com.equivalencia.equivalenciaBE.Service.AdminService;
 import com.equivalencia.equivalenciaBE.Service.DocenteService;
 import com.equivalencia.equivalenciaBE.Service.UsuarioService;
+import com.equivalencia.equivalenciaBE.Utilities.DocenteFirm;
 import com.equivalencia.equivalenciaBE.Utilities.RestResponse;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -54,9 +55,7 @@ public class UsuarioController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String getUsuario(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException{
-		this.mapper= new ObjectMapper();
-		
-		
+		this.mapper= new ObjectMapper();	
 		String ret="{}";
 		Usuario usuario= this.mapper.readValue(usuarioJson, Usuario.class);
 		List<Usuario> usuarios= this.usuarioService.findAll();
@@ -74,15 +73,34 @@ public class UsuarioController {
 						ret = this.mapper.writeValueAsString(admin);
 						return ret;
 					}
-		}
-		
-		
+		}		
 		return ret;
-		
-		
-		//return new RestResponse(HttpStatus.OK.value(),"logeado");
-		
 	}
+	
+	@RequestMapping(value = "/registroDocente", method = RequestMethod.POST)
+	public Docente saveDocente(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException{
+		this.mapper= new ObjectMapper();	
+		
+		DocenteFirm docenteFirm= this.mapper.readValue(usuarioJson, DocenteFirm.class);
+		
+		
+		
+		Usuario user= new Usuario();
+		System.out.println(user.getId()+" User id");
+		docenteFirm.buildUsuario(user);
+		
+		
+		Docente docente=docenteFirm.buildDocente();
+		System.out.println("Docente id: "+ docente.getId());
+		
+		user=this.usuarioService.save(user);
+		docente.setUsuarioId(user.getId());
+		
+		
+		return this.docenteService.save(docente);
+	}
+	
+	
 	private Usuario buscarUsuario(Usuario user, List<Usuario> users) {
 		for(Usuario usuarios: users) {
 			if(user.equals(usuarios)) {
@@ -104,6 +122,7 @@ public class UsuarioController {
 		
 		return isValid;
 	}
+	
 	
 	
 }

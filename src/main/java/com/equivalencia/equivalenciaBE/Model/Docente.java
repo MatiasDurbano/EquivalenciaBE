@@ -12,19 +12,22 @@ import javax.persistence.Table;
 @Access(AccessType.FIELD)
 public class Docente extends ParentEntity {
 
-	private static final long serialVersionUID = 1421183026650158379L;
+	private static final long serialVersionUID = -8959889448814764621L;
 
 		@Column(name = "nombre", nullable = false, length = 45)
 		private String nombre;
 		
 		@Column(name = "apellido", nullable = false, length = 45)
-		private String apelido;
+		private String apellido;
+		
+		@Column(name = "mail", length = 45)		
+		private String mail;
 		
 		@Column(name = "tipo")
 		private int tipo;
 		
 		@Column(name = "usuarioId")
-		private int usuarioId;
+		private Long usuarioId;
 
 		public String getNombre() {
 			return nombre;
@@ -34,20 +37,20 @@ public class Docente extends ParentEntity {
 			this.nombre = nombre;
 		}
 
-		public String getApelido() {
-			return apelido;
+		public String getApellido() {
+			return apellido;
 		}
 
-		public void setApelido(String apelido) {
-			this.apelido = apelido;
+		public void setApellido(String apelido) {
+			this.apellido = apelido;
 		}
 
-		public int getUsuarioId() {
+		public Long getUsuarioId() {
 			return usuarioId;
 		}
 
-		public void setUsuarioId(int usuarioId) {
-			this.usuarioId = usuarioId;
+		public void setUsuarioId(Long l) {
+			this.usuarioId = l;
 		}
 
 		public int getTipo() {
@@ -56,6 +59,14 @@ public class Docente extends ParentEntity {
 
 		public void setTipo(int tipo) {
 			this.tipo = tipo;
+		}
+
+		public String getMail() {
+			return mail;
+		}
+
+		public void setMail(String mail) {
+			this.mail = mail;
 		}
 		
 }
