@@ -12,5 +12,6 @@ public interface AdminService {
 	List<Admin> findAll();
 
 	Admin findOne(Long id);
+
 	
 }

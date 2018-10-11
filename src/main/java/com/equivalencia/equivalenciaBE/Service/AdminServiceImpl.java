@@ -29,5 +29,6 @@ public class AdminServiceImpl implements AdminService {
 	public Admin findOne(Long id) {
 		return this.adminRepository.getOne(id);
 	}
+	
 
 }

@@ -65,7 +65,7 @@ public class UsuarioController {
 			
 			switch(user.getTipo()) {
 				case "Docente" :
-						Docente docente = this.docenteService.findOne(user.getId());
+						Docente docente = this.docenteService.findOne(user.getId());	
 						ret = this.mapper.writeValueAsString(docente);
 						return ret;
 				case "Admin":
