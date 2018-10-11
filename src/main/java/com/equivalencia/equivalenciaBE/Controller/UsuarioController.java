@@ -83,21 +83,21 @@ public class UsuarioController {
 		
 		DocenteFirm docenteFirm= this.mapper.readValue(usuarioJson, DocenteFirm.class);
 		
-		
-		
-		Usuario user= new Usuario();
-		System.out.println(user.getId()+" User id");
-		docenteFirm.buildUsuario(user);
-		
-		
 		Docente docente=docenteFirm.buildDocente();
-		System.out.println("Docente id: "+ docente.getId());
+		if(this.validate(docente)) {
 		
-		user=this.usuarioService.save(user);
-		docente.setUsuarioId(user.getId());
+			Usuario user= new Usuario();
+			System.out.println(user.getId()+" User id");
+			docenteFirm.buildUsuario(user);
 		
+			user=this.usuarioService.save(user);
+			docente.setUsuarioId(user.getId());
 		
 		return this.docenteService.save(docente);
+		
+		}
+		
+		return null;
 	}
 	
 	
@@ -121,6 +121,16 @@ public class UsuarioController {
 			isValid = false;
 		
 		return isValid;
+	}
+	
+	private boolean validate (Docente docente) {
+		
+		boolean isValid = true;
+		if(docente.getNombre().equals("")|| docente.getApellido().equals("")||
+				docente.getMail().equals(""))
+			isValid = false;
+		return isValid;
+		
 	}
 	
 	
