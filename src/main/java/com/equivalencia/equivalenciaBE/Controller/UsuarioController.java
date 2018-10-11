@@ -1,6 +1,7 @@
 package com.equivalencia.equivalenciaBE.Controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class UsuarioController {
 	
 	protected ObjectMapper mapper;
 	
-	@RequestMapping(value = "/saveOrUpdate", method = RequestMethod.POST)
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public RestResponse saveOrUpdate(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException {
 		
 		this.mapper= new ObjectMapper();
@@ -40,14 +41,26 @@ public class UsuarioController {
 		
 	}
 
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public RestResponse getUsuario(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException{
+		this.mapper= new ObjectMapper();
+		
+		Usuario usuario= this.mapper.readValue(usuarioJson, Usuario.class);
+		List<Usuario> usuarios= this.usuarioService.findAll();
+		
+		if(usuarios.contains(usuario))
+			return new RestResponse(HttpStatus.OK.value(),"logeado");
+		
+		return new RestResponse(HttpStatus.NOT_ACCEPTABLE.value(),"rechazado");
+	}
 	
 	@SuppressWarnings("unused")
 	private boolean validate (Usuario usuario) {
 		
 		boolean isValid = true;
-		if(usuario.getNombre() == null)
+		if(usuario.getUsername() == null)
 			isValid = false;
-		if(usuario.getContraseña() == null)
+		if(usuario.getPassword() == null)
 			isValid = false;
 		
 		return isValid;
