@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.equivalencia.equivalenciaBE.Model.Docente;
 import com.equivalencia.equivalenciaBE.Service.DocenteService;
+import com.equivalencia.equivalenciaBE.Utilities.DocenteFirm;
 import com.equivalencia.equivalenciaBE.Utilities.RestResponse;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -32,5 +33,17 @@ public class DocenteController {
 	public Docente save(Docente docente) {
 		return this.docenteService.save(docente);
 	}
+
+	public Docente buildDocente(DocenteFirm docenteFirm) {
+		Docente ret = docenteFirm.buildDocente();
+		return ret;
+	}
+
+	public Docente guardar(Docente docente, long id) {
+		docente.setUsuarioId(id);
+		return this.docenteService.save(docente);
+	}
+	
+	
 	
 }

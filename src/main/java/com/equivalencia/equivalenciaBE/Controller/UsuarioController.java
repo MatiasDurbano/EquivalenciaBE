@@ -30,11 +30,9 @@ public class UsuarioController {
 	@Autowired
 	protected UsuarioService usuarioService;
 	@Autowired
-	protected DocenteService docenteService;
+	protected DocenteController docenteController;
 	@Autowired
-	protected AdminService adminService;
-	
-	
+	protected AdminController adminController;
 	
 	protected ObjectMapper mapper;
 	
@@ -65,11 +63,11 @@ public class UsuarioController {
 			
 			switch(user.getTipo()) {
 				case "Docente" :
-						Docente docente = this.docenteService.findOne(user.getId());	
+						Docente docente = this.docenteController.findOne(user.getId());	
 						ret = this.mapper.writeValueAsString(docente);
 						return ret;
 				case "Admin":
-						Admin admin = this.adminService.findOne(user.getId());
+						Admin admin = this.adminController.findOne(user.getId());
 						ret = this.mapper.writeValueAsString(admin);
 						return ret;
 					}
@@ -83,21 +81,14 @@ public class UsuarioController {
 		
 		DocenteFirm docenteFirm= this.mapper.readValue(usuarioJson, DocenteFirm.class);
 		
-		Docente docente=docenteFirm.buildDocente();
-		if(this.validate(docente)) {
+		Docente docente=this.docenteController.buildDocente(docenteFirm);;
 		
-			Usuario user= new Usuario();
-			System.out.println(user.getId()+" User id");
-			docenteFirm.buildUsuario(user);
+		Usuario user= new Usuario();
+		docenteFirm.buildUsuario(user);
+		user=this.usuarioService.save(user);
 		
-			user=this.usuarioService.save(user);
-			docente.setUsuarioId(user.getId());
+		return this.docenteController.guardar(docente,user.getId() );
 		
-		return this.docenteService.save(docente);
-		
-		}
-		
-		return null;
 	}
 	
 	
