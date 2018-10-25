@@ -3,8 +3,7 @@ package com.equivalencia.equivalenciaBE.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.equivalencia.equivalenciaBE.Model.Admin;
-
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Admin;
 import com.equivalencia.equivalenciaBE.Service.AdminService;
 
 @Controller

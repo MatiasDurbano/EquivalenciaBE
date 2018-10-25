@@ -1,4 +1,4 @@
-package com.equivalencia.equivalenciaBE.Model;
+package com.equivalencia.equivalenciaBE.Model.TablasDb;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -23,6 +23,7 @@ public class Docente extends ParentEntity {
 		@Column(name = "mail", length = 45)		
 		private String mail;
 		
+		//Esto es para preguntar el tipo de usuario que es
 		@Column(name = "tipo")
 		private int tipo;
 		

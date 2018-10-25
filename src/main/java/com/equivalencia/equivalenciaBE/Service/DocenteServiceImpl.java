@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.equivalencia.equivalenciaBE.Model.Docente;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
 import com.equivalencia.equivalenciaBE.dao.DocenteRepository;
 
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.equivalencia.equivalenciaBE.Model.Docente;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
 import com.equivalencia.equivalenciaBE.Service.DocenteService;
 import com.equivalencia.equivalenciaBE.Utilities.DocenteFirm;
 import com.equivalencia.equivalenciaBE.Utilities.RestResponse;

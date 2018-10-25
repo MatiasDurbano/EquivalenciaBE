@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.equivalencia.equivalenciaBE.Model.Usuario;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Usuario;
 import com.equivalencia.equivalenciaBE.dao.UsuarioRepository;
 
 @Service

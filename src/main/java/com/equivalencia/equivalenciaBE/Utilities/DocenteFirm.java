@@ -1,7 +1,7 @@
 package com.equivalencia.equivalenciaBE.Utilities;
 
-import com.equivalencia.equivalenciaBE.Model.Docente;
-import com.equivalencia.equivalenciaBE.Model.Usuario;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Usuario;
 
 public class DocenteFirm {
 	

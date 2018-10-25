@@ -2,7 +2,7 @@ package com.equivalencia.equivalenciaBE.Service;
 
 import java.util.List;
 
-import com.equivalencia.equivalenciaBE.Model.Admin;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Admin;
 
 
 public interface AdminService {

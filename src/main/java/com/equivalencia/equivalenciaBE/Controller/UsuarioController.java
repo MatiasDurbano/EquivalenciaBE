@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.equivalencia.equivalenciaBE.Model.Admin;
-import com.equivalencia.equivalenciaBE.Model.Docente;
-import com.equivalencia.equivalenciaBE.Model.Usuario;
-import com.equivalencia.equivalenciaBE.Model.UsuarioTipo;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Admin;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Usuario;
 import com.equivalencia.equivalenciaBE.Service.AdminService;
 import com.equivalencia.equivalenciaBE.Service.DocenteService;
 import com.equivalencia.equivalenciaBE.Service.UsuarioService;
@@ -53,7 +52,7 @@ public class UsuarioController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String getUsuario(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException{
-		this.mapper= new ObjectMapper();	
+		this.mapper= new ObjectMapper();
 		String ret="{}";
 		Usuario usuario= this.mapper.readValue(usuarioJson, Usuario.class);
 		List<Usuario> usuarios= this.usuarioService.findAll();

@@ -2,7 +2,7 @@ package com.equivalencia.equivalenciaBE.Service;
 
 import java.util.List;
 
-import com.equivalencia.equivalenciaBE.Model.Docente;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
 
 public interface DocenteService {
 

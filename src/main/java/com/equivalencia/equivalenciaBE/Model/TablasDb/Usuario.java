@@ -1,4 +1,4 @@
-package com.equivalencia.equivalenciaBE.Model;
+package com.equivalencia.equivalenciaBE.Model.TablasDb;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;

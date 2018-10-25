@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @ComponentScan(basePackages={"com.equivalencia.equivalenciaBE.Controller",
 		"com.equivalencia.equivalenciaBE.Service"})
-@EntityScan("com.equivalencia.equivalenciaBE.Model")
+@EntityScan({"com.equivalencia.equivalenciaBE.Model","com.equivalencia.equivalenciaBE.Model.TablasDb"})
 @EnableJpaRepositories("com.equivalencia.equivalenciaBE.dao")
 public class EquivalenciaBe1Application {
 

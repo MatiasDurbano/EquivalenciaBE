@@ -1,4 +1,4 @@
-package com.equivalencia.equivalenciaBE.Model;
+package com.equivalencia.equivalenciaBE.Model.TablasDb;
 
 import java.io.Serializable;
 
