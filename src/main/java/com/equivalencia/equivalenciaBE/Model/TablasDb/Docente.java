@@ -27,7 +27,7 @@ public class Docente extends ParentEntity {
 		@Column(name = "tipo")
 		private int tipo;
 		
-		@Column(name = "usuarioId")
+		@Column(name = "idusuario")
 		private Long usuarioId;
 
 		public String getNombre() {

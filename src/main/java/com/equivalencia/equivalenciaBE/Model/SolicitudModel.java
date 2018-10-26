@@ -3,18 +3,21 @@ package com.equivalencia.equivalenciaBE.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Comentario;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.SolicitudOfrecimiento;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class SolicitudModel {
 	
-	@JsonProperty( "list" )
+	@JsonProperty( "nombre" )
+	private String materiaUngs;
+	
+	@JsonProperty( "AsignaturaEquivalente" )
 	@JsonDeserialize(as=ArrayList.class, contentAs=SolicitudOfrecimiento.class)
 	private List<SolicitudOfrecimiento> solicitudOfrecimiento;
 	
-	@JsonProperty( "materiaUngs" )
-	private String materiaUngs;
+	private Comentario comentario;
 	
 	public String getmateriaUngs() {
 		return materiaUngs;
@@ -30,6 +33,14 @@ public class SolicitudModel {
 
 	public void setSolicitudOfrecimiento(List<SolicitudOfrecimiento> solicitudOfrecimiento) {
 		this.solicitudOfrecimiento = solicitudOfrecimiento;
+	}
+
+	public Comentario getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(Comentario comentario) {
+		this.comentario = comentario;
 	}	
 
 }

@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "folio")
+@Table(name = "folios")
 @Access(AccessType.FIELD)
 public class Folio extends ParentEntity{
 

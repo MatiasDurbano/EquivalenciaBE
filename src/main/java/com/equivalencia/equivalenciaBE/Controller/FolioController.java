@@ -17,4 +17,8 @@ public class FolioController {
 		return this.folioService.save(new Folio(Codificador.getAlfanumerico()));
 	}
 	
+	public Folio guardarFolio(Folio folio) {
+		return this.folioService.save(folio);
+	}
+	
 }

@@ -15,10 +15,11 @@ public class SolicitudPost {
 	 @JsonProperty( "alumno" )
 	private Alumno alumno;
 	
-	 @JsonProperty( "solicitudes" )
+	 @JsonProperty( "asignaturasUNGS" )
 	@JsonDeserialize(as=ArrayList.class, contentAs=SolicitudModel.class)
-	private List<SolicitudModel> solicitudesOfrecimiento;
+	private List<SolicitudModel> solicitudesModel;
 
+	 
 	public Alumno getAlumno() {
 		return alumno;
 	}
@@ -27,12 +28,12 @@ public class SolicitudPost {
 		this.alumno = alumno;
 	}
 
-	public List<SolicitudModel> getSolicitudesOfrecimiento() {
-		return solicitudesOfrecimiento;
+	public List<SolicitudModel> getSolicitudesModel() {
+		return solicitudesModel;
 	}
 
-	public void setSolicitudesOfrecimiento(List<SolicitudModel> solicitudesOfrecimiento) {
-		this.solicitudesOfrecimiento = solicitudesOfrecimiento;
+	public void setsolicitudesModel(List<SolicitudModel> solicitudesModel) {
+		this.solicitudesModel = solicitudesModel;
 	}
 
 	

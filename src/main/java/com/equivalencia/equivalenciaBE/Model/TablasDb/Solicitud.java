@@ -7,26 +7,26 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "solicitud")
+@Table(name = "solicitudes")
 @Access(AccessType.FIELD)
 public class Solicitud extends ParentEntity {
 
 	private static final long serialVersionUID = 5350261864065340928L;
 
-	@Column(name = "idAlumno", nullable = false)
+	@Column(name = "idalumno", nullable = false)
 	private long idAlumno;
 	
-	@Column(name = "idFolio", nullable = false)
+	@Column(name = "idfolio", nullable = false)
 	private long idFolio;
 	
-	@Column(name = "idDocente", nullable = true)
+	@Column(name = "iddocente", nullable = true)
 	private long idDocente;
 	
 	@Column(name = "estado", length = 45)		
 	private String estado;
 	
-	@Column(name = "comentario", length = 45)		
-	private String comentario;
+	@Column(name = "idcomentario")		
+	private long comentario;
 	
 	
 
@@ -62,12 +62,12 @@ public class Solicitud extends ParentEntity {
 		this.estado = estado;
 	}
 
-	public String getComentario() {
+	public long getComentario() {
 		return comentario;
 	}
 
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setComentario(long l) {
+		this.comentario = l;
 	}
 
 

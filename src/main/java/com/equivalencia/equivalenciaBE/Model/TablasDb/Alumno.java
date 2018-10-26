@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "alumno")
+@Table(name = "alumnos")
 @Access(AccessType.FIELD)
 public class Alumno extends ParentEntity  {
 
@@ -31,13 +31,10 @@ public class Alumno extends ParentEntity  {
 	@Column(name = "legajo",nullable = false, length = 45)		
 	private String legajo;
 
-	@Column(name = "carrera",nullable = false, length = 80)		
-	private String carrera;
-	
-	@Column(name = "idCarrera")		
+	@Column(name = "idcarrera")		
 	private int idCarrera;
 	
-	@Column(name = "idCertificados")
+	@Column(name = "idcertificados")
 	private int idCertificados;
 
 	public String getNombre() {
@@ -88,12 +85,20 @@ public class Alumno extends ParentEntity  {
 		this.legajo = legajo;
 	}
 
-	public String getCarrera() {
-		return carrera;
+	public int getIdCarrera() {
+		return idCarrera;
 	}
 
-	public void setCarrera(String carrera) {
-		this.carrera = carrera;
+	public void setIdCarrera(int idCarrera) {
+		this.idCarrera = idCarrera;
+	}
+
+	public int getIdCertificados() {
+		return idCertificados;
+	}
+
+	public void setIdCertificados(int idCertificados) {
+		this.idCertificados = idCertificados;
 	}
 
 	

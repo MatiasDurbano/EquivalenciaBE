@@ -6,59 +6,86 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
-@Table(name = "MateriaOfrecida")
+@Table(name = "Materiaofrecida")
 @Access(AccessType.FIELD)
 public class SolicitudOfrecimiento extends ParentEntity {
 	
 	private static final long serialVersionUID = -167353177980675614L;
-
-	@Column(name = "universidad")
+	
+	@JsonProperty("InstitutoOrigen")
+	@Column(name = "universidad", nullable = false, length = 45)
 	private String universidad;
 	
-	@Column(name = "añoAprobacion")
-	private int añoAprobacion;
 	
+	@JsonProperty( "nombre" )
 	@Column(name = "materia", nullable = false, length = 45)
-	private String asignaturaPropuesta;
+	private String nombre;
 	
+	@JsonProperty( "AnoAprobacion" )
+	@Column(name = "anioaprobacion")
+	private int anioAprobacion;
+	
+	@JsonProperty( "CargaHoraria" )
 	@Column(name = "horas")
 	private int cargaHoraria;
 	
-	@Column(name = "idPlan")
-	private int idPlan;
 	
-	public int getAñoAprobacion() {
-		return añoAprobacion;
-	}
-	public void setAñoAprobacion(int añoAprobacion) {
-		this.añoAprobacion = añoAprobacion;
-	}
-	public String getAsignaturaPropuesta() {
-		return asignaturaPropuesta;
-	}
-	public void setAsignaturaPropuesta(String asignaturaPropuesta) {
-		this.asignaturaPropuesta = asignaturaPropuesta;
-	}
+	@Column(name = "idplan")
+	private int idPlan;
+
+
 	public String getUniversidad() {
 		return universidad;
 	}
+
+
 	public void setUniversidad(String universidad) {
 		this.universidad = universidad;
 	}
+
+
+	public String getNombre() {
+		return nombre;
+	}
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+	public int getAnioAprobacion() {
+		return anioAprobacion;
+	}
+
+
+	public void setAnioAprobacion(int anioAprobacion) {
+		this.anioAprobacion = anioAprobacion;
+	}
+
+
 	public int getCargaHoraria() {
 		return cargaHoraria;
 	}
+
+
 	public void setCargaHoraria(int cargaHoraria) {
 		this.cargaHoraria = cargaHoraria;
 	}
+
+
 	public int getIdPlan() {
 		return idPlan;
 	}
+
+
 	public void setIdPlan(int idPlan) {
 		this.idPlan = idPlan;
 	}
 	
-	
 
+	
 }

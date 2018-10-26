@@ -15,8 +15,7 @@ public class AlumnoController {
 	
 	
 	public Alumno saveAlumno(Alumno alumno) {
-	
-		return null;
+		return this.alumnoService.save(alumno);
 	}
 
 }
