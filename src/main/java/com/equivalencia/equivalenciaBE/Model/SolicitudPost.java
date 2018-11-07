@@ -1,11 +1,10 @@
-package com.equivalencia.equivalenciaBE.Utilities;
+package com.equivalencia.equivalenciaBE.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Alumno;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.SolicitudOfrecimiento;
-import com.equivalencia.equivalenciaBE.Model.SolicitudModel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

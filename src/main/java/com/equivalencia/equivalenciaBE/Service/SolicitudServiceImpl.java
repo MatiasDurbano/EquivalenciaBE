@@ -1,5 +1,6 @@
 package com.equivalencia.equivalenciaBE.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,27 @@ public class SolicitudServiceImpl implements SolicitudService {
 			this.solicitudesHasMateriasRepository.save(new SolicitudHasMateria(id,idOfrecimiento));
 			
 		}
+	}
+
+	@Override
+	public List<Solicitud> findAll(long id) {
+		return this.solicitudRepository.findAll(id);
+	}
+
+	@Override
+	public String findMateria(long id) {
+		return this.solicitudRepository.findMateria(id);
+	}
+
+	@Override
+	public List<SolicitudOfrecimiento> findMateriaOfrecimiento(long id) {
+		List<SolicitudHasMateria> solicitudHas= this.solicitudesHasMateriasRepository.findAllSolicitudHas(id);
+		List<SolicitudOfrecimiento> ret = new ArrayList<SolicitudOfrecimiento>();
+		for(SolicitudHasMateria solicitud: solicitudHas) {
+			ret.add(this.solicitudOfrecimientoRepository.getOne(solicitud.getSegundaClave()));
+			
+		}
+		return ret;
 	}
 	
 	

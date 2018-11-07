@@ -13,6 +13,6 @@ public interface AdminRepository extends JpaRepository<Admin, Long>{
 	Admin save(Admin admin);
 
 	
-	@Query(value = "Select * FROM Admin where Admin.usuario_id= :id ", nativeQuery = true)
+	@Query(value = "Select * FROM Admin where Admin.idusuario= :id ", nativeQuery = true)
 	Admin getOne(@Param("id")Long id);
 }

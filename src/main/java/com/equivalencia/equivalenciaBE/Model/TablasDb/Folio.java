@@ -17,13 +17,16 @@ public class Folio extends ParentEntity{
 	private String codigo;
 
 	
-	public Folio(String codigo) {
-		this.codigo=codigo;
-		
+	
+	public Folio() {
 	}
 	
 	public String getCodigo() {
 		return codigo;
+	}
+	
+	public void setCodigo(String codigo) {
+		this.codigo=codigo;
 	}
 	
 }

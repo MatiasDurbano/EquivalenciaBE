@@ -43,6 +43,10 @@ public class DocenteController {
 		docente.setUsuarioId(id);
 		return this.docenteService.save(docente);
 	}
+
+	public boolean existe(Docente docente) {
+		return this.docenteService.existe(docente);
+	}
 	
 	
 	

@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "instituto")
 @Access(AccessType.FIELD)
@@ -13,9 +15,11 @@ public class Instituto extends ParentEntity {
 
 	private static final long serialVersionUID = 172092432402824749L;
 
+	@JsonProperty( "nombre" )
 	@Column(name = "nombre", nullable = false, length = 45)
 	private String nombre;
 
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -23,4 +27,5 @@ public class Instituto extends ParentEntity {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
 }

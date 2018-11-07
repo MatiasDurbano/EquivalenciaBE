@@ -15,7 +15,7 @@ public class SolicitudOfrecimiento extends ParentEntity {
 	
 	private static final long serialVersionUID = -167353177980675614L;
 	
-	@JsonProperty("InstitutoOrigen")
+	@JsonProperty("institutoOrigen")
 	@Column(name = "universidad", nullable = false, length = 45)
 	private String universidad;
 	
@@ -24,11 +24,11 @@ public class SolicitudOfrecimiento extends ParentEntity {
 	@Column(name = "materia", nullable = false, length = 45)
 	private String nombre;
 	
-	@JsonProperty( "AnoAprobacion" )
+	@JsonProperty( "anoAprobacion" )
 	@Column(name = "anioaprobacion")
 	private int anioAprobacion;
 	
-	@JsonProperty( "CargaHoraria" )
+	@JsonProperty( "cargaHoraria" )
 	@Column(name = "horas")
 	private int cargaHoraria;
 	

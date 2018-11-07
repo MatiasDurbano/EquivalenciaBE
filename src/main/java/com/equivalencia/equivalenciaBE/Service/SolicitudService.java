@@ -12,6 +12,12 @@ public interface SolicitudService {
 	SolicitudOfrecimiento save(SolicitudOfrecimiento solicitud);
 
 	void SolicitudHasMateriasOfrecidas(long id, List<Long> idsOfrecimiento);
+
+	List<Solicitud> findAll(long id);
+
+	String findMateria(long id);
+
+	List<SolicitudOfrecimiento> findMateriaOfrecimiento(long id);
 	
 	
 }

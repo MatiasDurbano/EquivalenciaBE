@@ -13,6 +13,7 @@ public class DocenteFirm {
 	private String password;
 	private String tipo;
 	private String mail;
+	private long instituto;
 	
 	
 	//asco
@@ -22,6 +23,7 @@ public class DocenteFirm {
 		docente.setApellido(apellido);
 		docente.setTipo(1);
 		docente.setMail(mail);
+		docente.setIdInsituto(instituto);
 		return docente;
 	}
 	
@@ -85,5 +87,13 @@ public class DocenteFirm {
 
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+
+	public long getInstituto() {
+		return instituto;
+	}
+
+	public void setInstituto(long instituto) {
+		this.instituto = instituto;
 	}
 }

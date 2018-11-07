@@ -10,5 +10,5 @@ public interface UsuarioService {
 
 	List<Usuario> findAll();
 
-
+	boolean existe(Usuario usuario);
 }

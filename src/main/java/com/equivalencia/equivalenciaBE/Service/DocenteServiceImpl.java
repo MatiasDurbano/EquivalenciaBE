@@ -29,4 +29,13 @@ public class DocenteServiceImpl  implements DocenteService {
 	public Docente findOne(Long id) {
 		return this.docenteRepository.getOne(id);
 	}
+
+	@Override
+	public boolean existe(Docente docente) {
+		List<Docente> list=this.docenteRepository.findAll(docente.getNombre(),docente.getApellido());
+		if(list.size()>=1) {
+			return true;
+		}
+		return false;
+	}
 }

@@ -22,7 +22,7 @@ public class AlumnoModel extends ParentEntity {
 
 	private String legajo;
 
-	private Carrera carrera;
+	private CarreraModel carrera;
 	
 	private Certificado certificado;
 
@@ -74,11 +74,11 @@ public class AlumnoModel extends ParentEntity {
 		this.legajo = legajo;
 	}
 
-	public Carrera getCarrera() {
+	public CarreraModel getCarrera() {
 		return carrera;
 	}
 
-	public void setCarrera(Carrera carrera) {
+	public void setCarrera(CarreraModel carrera) {
 		this.carrera = carrera;
 	}
 

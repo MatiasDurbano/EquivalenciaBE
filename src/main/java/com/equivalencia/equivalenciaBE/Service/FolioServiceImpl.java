@@ -16,5 +16,10 @@ public class FolioServiceImpl implements FolioService {
 	public Folio save(Folio folio) {
 		return this.folioRepository.save(folio);
 	}
+	
+	@Override
+	public Folio getOne(String codigo) {
+		return this.folioRepository.getOne(codigo);
+	}
 
 }

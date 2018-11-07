@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.equivalencia.equivalenciaBE.Utilities.EstadoSolicitud;
+
 @Entity
 @Table(name = "solicitudes")
 @Access(AccessType.FIELD)
@@ -55,11 +57,11 @@ public class Solicitud extends ParentEntity {
 	}
 
 	public String getEstado() {
-		return estado;
+		return estado.toString();
 	}
 
-	public void setEstado(String estado) {
-		this.estado = estado;
+	public void setEstado(EstadoSolicitud estado) {
+		this.estado = estado.toString();
 	}
 
 	public long getComentario() {
@@ -69,9 +71,4 @@ public class Solicitud extends ParentEntity {
 	public void setComentario(long l) {
 		this.comentario = l;
 	}
-
-
-	
-
-	
 }

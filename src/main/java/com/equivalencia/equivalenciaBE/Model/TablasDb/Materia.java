@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Materia")
+@Table(name = "materias")
 @Access(AccessType.FIELD)
 public class Materia extends ParentEntity {
 
@@ -19,8 +19,10 @@ public class Materia extends ParentEntity {
 	@Column(name = "horas")
 	private int horas;
 	
-	private Instituto instituto;
+	@Column(name = "idplan")
+	private int plan;
 
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -37,12 +39,13 @@ public class Materia extends ParentEntity {
 		this.horas = horas;
 	}
 
-	public Instituto getInstituto() {
-		return instituto;
+
+	public int getPlan() {
+		return plan;
 	}
 
-	public void setInstituto(Instituto instituto) {
-		this.instituto = instituto;
+	public void setPlan(int plan) {
+		this.plan = plan;
 	}
-	
+
 }

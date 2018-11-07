@@ -18,4 +18,14 @@ public class AlumnoController {
 		return this.alumnoService.save(alumno);
 	}
 
+
+	public Alumno getOne(long id) {
+		return this.alumnoService.getOne(id);
+	}
+
+
+	public boolean existe(Alumno alumno) {
+		return this.alumnoService.existe(alumno);
+	}
+
 }

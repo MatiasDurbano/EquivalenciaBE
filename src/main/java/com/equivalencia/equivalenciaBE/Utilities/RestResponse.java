@@ -17,7 +17,6 @@ public class RestResponse {
 		this.responseCode=responseCode;
 	}
 	
-	
 	public Integer getResponse() {
 		return responseCode;
 	}

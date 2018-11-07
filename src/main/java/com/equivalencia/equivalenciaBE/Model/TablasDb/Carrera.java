@@ -16,7 +16,34 @@ public class Carrera extends ParentEntity {
 	@Column(name = "nombre", nullable = false, length = 45)
 	private String nombre;
 	
-	@Column(name = "idUniversidad")
+	@Column(name = "iduniversidad")
 	private int idUniversidad;
+	
+	@Column(name = "idinstituto")
+	private int idinstituto;
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public int getIdUniversidad() {
+		return idUniversidad;
+	}
+
+	public void setIdUniversidad(int idUniversidad) {
+		this.idUniversidad = idUniversidad;
+	}
+
+	public int getIdinstituto() {
+		return idinstituto;
+	}
+
+	public void setIdinstituto(int idinstituto) {
+		this.idinstituto = idinstituto;
+	}
 
 }

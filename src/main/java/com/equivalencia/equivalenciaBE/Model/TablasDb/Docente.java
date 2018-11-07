@@ -28,8 +28,11 @@ public class Docente extends ParentEntity {
 		private int tipo;
 		
 		@Column(name = "idusuario")
-		private Long usuarioId;
+		private long usuarioId;
 
+		@Column(name = "idinstituto")
+		private long idInsituto;
+		
 		public String getNombre() {
 			return nombre;
 		}
@@ -68,6 +71,14 @@ public class Docente extends ParentEntity {
 
 		public void setMail(String mail) {
 			this.mail = mail;
+		}
+
+		public Long getIdInsituto() {
+			return idInsituto;
+		}
+
+		public void setIdInsituto(long idInsituto) {
+			this.idInsituto = idInsituto;
 		}
 		
 }

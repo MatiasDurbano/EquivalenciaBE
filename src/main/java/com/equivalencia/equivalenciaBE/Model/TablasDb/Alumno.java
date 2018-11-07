@@ -19,8 +19,8 @@ public class Alumno extends ParentEntity  {
 	@Column(name = "apellido", nullable = false, length = 45)
 	private String apellido;
 	
-	@Column(name = "mail", nullable = false, length = 80)		
-	private String mail;
+	@Column(name = "email", nullable = false, length = 80)		
+	private String email;
 	
 	@Column(name = "telefono",nullable = false, length = 45)		
 	private String telefono;
@@ -53,12 +53,12 @@ public class Alumno extends ParentEntity  {
 		this.apellido = apellido;
 	}
 
-	public String getMail() {
-		return mail;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setEmail(String mail) {
+		this.email = mail;
 	}
 
 	public String getTelefono() {

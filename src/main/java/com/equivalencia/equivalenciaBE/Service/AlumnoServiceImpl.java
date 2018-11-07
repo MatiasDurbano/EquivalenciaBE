@@ -1,5 +1,7 @@
 package com.equivalencia.equivalenciaBE.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,21 @@ public class AlumnoServiceImpl implements AlumnoService {
 	@Override
 	public Alumno save(Alumno alumno) {
 		return this.alumnoRepository.save(alumno);
+	}
+
+	@Override
+	public Alumno getOne(long id) {
+		return this.alumnoRepository.getOne(id);
+	}
+
+	@Override
+	public boolean existe(Alumno alumno) {
+		List<Alumno> lista=this.alumnoRepository.findAll(alumno.getLegajo());
+		if(lista.size()>=1) {
+			return true;
+		}
+		return false;
+		
 	}
 	
 	

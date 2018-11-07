@@ -13,9 +13,13 @@ public class SolicitudModel {
 	@JsonProperty( "nombre" )
 	private String materiaUngs;
 	
-	@JsonProperty( "AsignaturaEquivalente" )
+	@JsonProperty( "equivalencias" )
 	@JsonDeserialize(as=ArrayList.class, contentAs=SolicitudOfrecimiento.class)
 	private List<SolicitudOfrecimiento> solicitudOfrecimiento;
+	
+	private AlumnoModel alumno;
+	
+	private String estado;
 	
 	private Comentario comentario;
 	
@@ -41,6 +45,23 @@ public class SolicitudModel {
 
 	public void setComentario(Comentario comentario) {
 		this.comentario = comentario;
+	}
+
+
+	public AlumnoModel getAlumno() {
+		return alumno;
+	}
+
+	public void setAlumno(AlumnoModel alumno) {
+		this.alumno = alumno;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}	
 
 }

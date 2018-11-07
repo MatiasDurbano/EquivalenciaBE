@@ -22,7 +22,7 @@ public class Admin extends ParentEntity{
 	@Column(name = "tipo")
 	private int tipo;
 	
-	@Column(name = "usuarioId")
+	@Column(name = "idusuario")
 	private int usuarioId;
 
 	public String getNombre() {

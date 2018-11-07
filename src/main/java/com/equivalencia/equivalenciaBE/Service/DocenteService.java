@@ -11,4 +11,6 @@ public interface DocenteService {
 	List<Docente> findAll();
 
 	Docente findOne(Long id);
+
+	boolean existe(Docente docente);
 }

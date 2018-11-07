@@ -14,11 +14,18 @@ public class FolioController {
 	protected FolioService folioService;
 	
 	public Folio crearFolio() {
-		return this.folioService.save(new Folio(Codificador.getAlfanumerico()));
+		
+		Folio aux= new Folio();
+		aux.setCodigo(Codificador.getAlfanumerico());
+		return this.folioService.save(aux);
 	}
 	
 	public Folio guardarFolio(Folio folio) {
 		return this.folioService.save(folio);
+	}
+	
+	public Folio getOne(String codigo) {
+		return this.folioService.getOne(codigo);
 	}
 	
 }

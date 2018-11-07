@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.equivalencia.equivalenciaBE.Model.Administrador;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Admin;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Usuario;
 import com.equivalencia.equivalenciaBE.Service.AdminService;
 import com.equivalencia.equivalenciaBE.Service.DocenteService;
+import com.equivalencia.equivalenciaBE.Service.InstitutoService;
 import com.equivalencia.equivalenciaBE.Service.UsuarioService;
 import com.equivalencia.equivalenciaBE.Utilities.DocenteFirm;
 import com.equivalencia.equivalenciaBE.Utilities.RestResponse;
@@ -28,6 +30,9 @@ public class UsuarioController {
 
 	@Autowired
 	protected UsuarioService usuarioService;
+	@Autowired
+	protected InstitutoService institutoService;
+	
 	@Autowired
 	protected DocenteController docenteController;
 	@Autowired
@@ -67,15 +72,26 @@ public class UsuarioController {
 						return ret;
 				case "Admin":
 						Admin admin = this.adminController.findOne(user.getId());
-						ret = this.mapper.writeValueAsString(admin);
+						Administrador administrador= this.transform(admin);
+						ret = this.mapper.writeValueAsString(administrador);
 						return ret;
 					}
 		}		
 		return ret;
 	}
+	public Administrador transform(Admin ad) {
+		Administrador admin= new Administrador();
+		admin.setApellido(ad.getApelido());
+		admin.setNombre(ad.getNombre());
+		admin.setTipo(0);
+		admin.setInstituto(this.institutoService.getOne(ad.getId()).getNombre());
+		System.out.println(admin.getInstituto()+ " instituto");
+		return admin;
+	}
+	
 	
 	@RequestMapping(value = "/registroDocente", method = RequestMethod.POST)
-	public Docente saveDocente(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException{
+	public String saveDocente(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException{
 		this.mapper= new ObjectMapper();	
 		
 		DocenteFirm docenteFirm= this.mapper.readValue(usuarioJson, DocenteFirm.class);
@@ -84,10 +100,19 @@ public class UsuarioController {
 		
 		Usuario user= new Usuario();
 		docenteFirm.buildUsuario(user);
-		user=this.usuarioService.save(user);
 		
-		return this.docenteController.guardar(docente,user.getId() );
-		
+		if(!this.usuarioService.existe(user)&& !this.docenteController.existe(docente)) {
+			user=this.usuarioService.save(user);
+			this.docenteController.guardar(docente,user.getId() );
+			String ret= this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"ok"));
+			return  ret;
+		}
+		else {
+			String ret= this.mapper.writeValueAsString(new RestResponse(HttpStatus.CONFLICT.value(),"already exist"));
+			return  ret;
+
+					
+		}
 	}
 	
 	

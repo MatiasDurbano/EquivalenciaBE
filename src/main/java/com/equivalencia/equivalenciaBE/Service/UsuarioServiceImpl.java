@@ -16,12 +16,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Usuario save(Usuario usuario) {
+		
 		return this.usuarioRepository.save(usuario);
 	}
 
 	@Override
 	public List<Usuario> findAll() {
 		return this.usuarioRepository.findAll();
+	}
+	
+	public boolean existe(Usuario usuario) {
+		List<Usuario> list =this.usuarioRepository.findAll(usuario.getUsername());
+		if(list.size()>=1) {
+			return true;
+		}
+		return false;
 	}
 	
 }
