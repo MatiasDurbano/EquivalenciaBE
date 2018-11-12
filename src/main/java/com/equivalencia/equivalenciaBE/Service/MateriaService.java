@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Materia;
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.MateriasHasCarrera;
+import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateriasUngs;
 
 public interface MateriaService {
 	
@@ -13,5 +14,6 @@ public interface MateriaService {
 
 	Materia save(Materia materia);
 	
+	Materia getOne(String nombre);
 
 }

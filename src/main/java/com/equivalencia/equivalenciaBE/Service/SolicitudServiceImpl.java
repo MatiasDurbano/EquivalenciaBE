@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Comentario;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Solicitud;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.SolicitudOfrecimiento;
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateria;
@@ -64,6 +65,13 @@ public class SolicitudServiceImpl implements SolicitudService {
 		}
 		return ret;
 	}
+
+	@Override
+	public Solicitud getOne(long segundaClave) {
+			return this.solicitudRepository.getOne(segundaClave);
+	}
+
+
 	
 	
 	

@@ -8,7 +8,7 @@ public interface CarreraService {
 	
 	List<Carrera> findAll();
 
-	Carrera getOne(int idCarrera);
+	Carrera getOne(long l);
 
 	List<Carrera> findAllporInstituto(String nombre);
 

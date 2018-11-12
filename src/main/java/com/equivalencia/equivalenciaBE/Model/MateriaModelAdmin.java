@@ -9,6 +9,8 @@ public class MateriaModelAdmin {
 	
 	@JsonProperty( "horas" )
 	private int horas;
+	
+	private String plan;
 
 	public String getNombre() {
 		return nombreMateria;

@@ -20,7 +20,7 @@ public class CarreraServiceImpl implements CarreraService {
 	}
 
 	@Override
-	public Carrera getOne(int idCarrera) {
+	public Carrera getOne(long idCarrera) {
 		return this.carreraRepository.getOne(idCarrera);
 	}
 

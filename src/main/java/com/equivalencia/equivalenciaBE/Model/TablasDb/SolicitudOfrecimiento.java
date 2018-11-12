@@ -34,7 +34,7 @@ public class SolicitudOfrecimiento extends ParentEntity {
 	
 	
 	@Column(name = "idplan")
-	private int idPlan;
+	private long idPlan;
 
 
 	public String getUniversidad() {
@@ -77,13 +77,13 @@ public class SolicitudOfrecimiento extends ParentEntity {
 	}
 
 
-	public int getIdPlan() {
+	public long getIdPlan() {
 		return idPlan;
 	}
 
 
-	public void setIdPlan(int idPlan) {
-		this.idPlan = idPlan;
+	public void setIdPlan(long l) {
+		this.idPlan = l;
 	}
 	
 

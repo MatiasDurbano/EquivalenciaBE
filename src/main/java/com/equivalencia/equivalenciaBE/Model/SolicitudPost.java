@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Alumno;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Certificado;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.SolicitudOfrecimiento;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public class SolicitudPost {
 	
 	 @JsonProperty( "alumno" )
-	private Alumno alumno;
+	private AlumnoSolicitud alumno;
 	
 	 @JsonProperty( "asignaturasUNGS" )
 	@JsonDeserialize(as=ArrayList.class, contentAs=SolicitudModel.class)
@@ -20,10 +21,10 @@ public class SolicitudPost {
 
 	 
 	public Alumno getAlumno() {
-		return alumno;
+		return alumno.getAlumno();
 	}
 
-	public void setAlumno(Alumno alumno) {
+	public void setAlumno(AlumnoSolicitud alumno) {
 		this.alumno = alumno;
 	}
 
@@ -33,6 +34,14 @@ public class SolicitudPost {
 
 	public void setsolicitudesModel(List<SolicitudModel> solicitudesModel) {
 		this.solicitudesModel = solicitudesModel;
+	}
+	
+	public Certificado getCertificado() {
+		return alumno.getCertificado();
+	}
+	
+	public String getCarrera() {
+		return this.alumno.getCarrera();
 	}
 
 	

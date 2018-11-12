@@ -17,5 +17,10 @@ public class ComentarioServiceImpl implements ComentarioService {
 		return this.comentarioRepository.save(comentario);
 	}
 
+	@Override
+	public Comentario findComentario(long id) {
+		return this.comentarioRepository.findComentario(id);
+	}
+
 	
 }

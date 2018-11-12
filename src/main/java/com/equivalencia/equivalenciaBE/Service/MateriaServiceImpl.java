@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Materia;
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.MateriasHasCarrera;
+import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateriasUngs;
 import com.equivalencia.equivalenciaBE.dao.MateriaRepository;
 
 
@@ -32,5 +33,12 @@ public class MateriaServiceImpl implements MateriaService {
 	public Materia save(Materia materia) {
 		return this.materiaRepository.save(materia);
 	}
+
+
+	@Override
+	public Materia getOne(String nombre) {
+		return this.materiaRepository.getOne(nombre);
+	}
+
 
 }

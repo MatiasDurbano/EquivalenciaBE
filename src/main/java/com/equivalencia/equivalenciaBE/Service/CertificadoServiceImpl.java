@@ -17,5 +17,10 @@ public class CertificadoServiceImpl implements CertificadoService {
 		return this.certificadoRepository.save(certificado);
 	}
 
+	@Override
+	public Certificado getOne(long idCertificados) {
+		return this.certificadoRepository.getOne(idCertificados);
+	}
+
 	
 }

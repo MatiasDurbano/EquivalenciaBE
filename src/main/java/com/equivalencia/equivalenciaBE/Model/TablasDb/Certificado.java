@@ -7,36 +7,32 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "certificado")
+@Table(name = "certificados")
 @Access(AccessType.FIELD)
 public class Certificado extends ParentEntity {
 
 	private static final long serialVersionUID = 2884181919398995842L;
 	
-	@Column(name = "constancia")	
-	private byte[] constancia;
+	@Column(name = "constanciadiciplinaria")	
+	private String constancia;
 	
 	@Column(name = "analitico")	
-	private byte[] analitico;
+	private String analitico;
 
-	public Certificado(byte[] constancia, byte[] analitico) {
-		this.constancia=constancia;
-		this.analitico=analitico;
-	}
 	
-	public byte[] getConstancia() {
+	public String getConstancia() {
 		return constancia;
 	}
 
-	public void setConstancia(byte[] constancia) {
+	public void setConstancia(String constancia) {
 		this.constancia = constancia;
 	}
 
-	public byte[] getAnalitico() {
+	public String getAnalitico() {
 		return analitico;
 	}
 
-	public void setAnalitico(byte[] analitico) {
+	public void setAnalitico(String analitico) {
 		this.analitico = analitico;
 	}
 	

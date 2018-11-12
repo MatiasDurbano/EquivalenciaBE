@@ -26,6 +26,7 @@ import com.equivalencia.equivalenciaBE.Service.CarreraService;
 import com.equivalencia.equivalenciaBE.Service.InstitutoService;
 import com.equivalencia.equivalenciaBE.Service.MateriaService;
 import com.equivalencia.equivalenciaBE.Service.MateriasHasCarreraService;
+import com.equivalencia.equivalenciaBE.Service.SolicitudHasMateriaUngsService;
 import com.equivalencia.equivalenciaBE.Utilities.RestResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +44,7 @@ public class CarreraController {
 	protected MateriaService materiaService;
 	@Autowired 
 	protected MateriasHasCarreraService materiaHas;
+	
 	
 	protected ObjectMapper mapper;
 	
@@ -166,9 +168,13 @@ public class CarreraController {
 		return ids;
 		
 	}
+	
+	public Carrera getCarreraPorNombre(String carrera) {
+		return this.carreraService.getOne(carrera);
+	}
 
-	public Carrera getOne(int idCarrera) {
-		return this.carreraService.getOne(idCarrera);
+	public Carrera getOne(long l) {
+		return this.carreraService.getOne(l);
 	}
 	private Carrera getCarrerabyID(List<Carrera> carreras, Long id) {
 		Carrera ret= new Carrera();
@@ -181,6 +187,8 @@ public class CarreraController {
 		}
 		return ret;
 	}
+	
+	
 	
 	private MateriaModelAdmin getMateriaModelAdmin(Materia materia) {
 		MateriaModelAdmin materiaModel= new MateriaModelAdmin();

@@ -32,10 +32,10 @@ public class Alumno extends ParentEntity  {
 	private String legajo;
 
 	@Column(name = "idcarrera")		
-	private int idCarrera;
+	private long idCarrera;
 	
 	@Column(name = "idcertificados")
-	private int idCertificados;
+	private long idCertificados;
 
 	public String getNombre() {
 		return nombre;
@@ -85,20 +85,20 @@ public class Alumno extends ParentEntity  {
 		this.legajo = legajo;
 	}
 
-	public int getIdCarrera() {
+	public long getIdCarrera() {
 		return idCarrera;
 	}
 
-	public void setIdCarrera(int idCarrera) {
-		this.idCarrera = idCarrera;
+	public void setIdCarrera(long l) {
+		this.idCarrera = l;
 	}
 
-	public int getIdCertificados() {
+	public long getIdCertificados() {
 		return idCertificados;
 	}
 
-	public void setIdCertificados(int idCertificados) {
-		this.idCertificados = idCertificados;
+	public void setIdCertificados(long l) {
+		this.idCertificados = l;
 	}
 
 	

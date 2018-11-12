@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Materia;
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.MateriasHasCarrera;
+import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateriasUngs;
 
 public interface MateriaRepository extends JpaRepository<Materia,Long> {
 
@@ -19,7 +20,9 @@ public interface MateriaRepository extends JpaRepository<Materia,Long> {
 
 	@Query(value = "Select * FROM materias where materias.id=:id", nativeQuery = true)
 	List<Materia> findAll(@Param("id")long primeraClave);
-	
-	
+
+	@Query(value = "Select * FROM materias where materias.nombre=:nombre", nativeQuery = true)
+	Materia getOne(@Param("nombre")String nombre);
+
 
 }

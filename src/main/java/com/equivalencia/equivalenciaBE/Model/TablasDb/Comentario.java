@@ -10,8 +10,8 @@ import javax.persistence.Table;
 @Table(name = "comentario")
 @Access(AccessType.FIELD)
 public class Comentario extends ParentEntity {
-
-	private static final long serialVersionUID = 8940439905468602231L;
+	
+	private static final long serialVersionUID = -7069067959705714342L;
 	
 	@Column(name = "comentario", nullable = true, length = 300)
 	private String comentario;

@@ -6,5 +6,7 @@ public interface CertificadoService {
 
 	
 	Certificado save(Certificado certificado);
+
+	Certificado getOne(long idCertificados);
 	
 }
