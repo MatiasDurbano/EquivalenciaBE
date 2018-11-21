@@ -20,7 +20,7 @@ public class Materia extends ParentEntity {
 	private int horas;
 	
 	@Column(name = "idplan")
-	private int plan;
+	private long plan;
 
 	
 	public String getNombre() {
@@ -40,12 +40,12 @@ public class Materia extends ParentEntity {
 	}
 
 
-	public int getPlan() {
+	public long getPlan() {
 		return plan;
 	}
 
-	public void setPlan(int plan) {
-		this.plan = plan;
+	public void setPlan(long l) {
+		this.plan = l;
 	}
 
 }

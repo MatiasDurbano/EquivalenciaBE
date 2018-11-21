@@ -1,36 +1,18 @@
 package com.equivalencia.equivalenciaBE.Model;
 
+import java.util.List;
+
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Comentario;
 
 
 public class SolicitudMateriaAlumno {
 
-	
-	private String materiaUngs;
-	
-	private AsignaturaEquivalente solicitudOfrecimiento;
+	private List<AsignaturasUngs> asignaturasUngs;
 	
 	private AlumnoModel alumno;
 	
 	private String estado;
 	
-	private Comentario comentario;
-
-	public String getMateriaUngs() {
-		return materiaUngs;
-	}
-
-	public void setMateriaUngs(String materiaUngs) {
-		this.materiaUngs = materiaUngs;
-	}
-
-	public AsignaturaEquivalente getSolicitudOfrecimiento() {
-		return solicitudOfrecimiento;
-	}
-
-	public void setSolicitudOfrecimiento(AsignaturaEquivalente solicitudOfrecimiento) {
-		this.solicitudOfrecimiento = solicitudOfrecimiento;
-	}
 
 	public AlumnoModel getAlumno() {
 		return alumno;
@@ -48,15 +30,13 @@ public class SolicitudMateriaAlumno {
 		this.estado = estado;
 	}
 
-	public Comentario getComentario() {
-		return comentario;
+	public List<AsignaturasUngs> getAsignaturaUngs() {
+		return asignaturasUngs;
 	}
 
-	public void setComentario(Comentario comentario) {
-		this.comentario = comentario;
+	public void setAsignaturaUngs(List<AsignaturasUngs> asignaturaUngs) {
+		this.asignaturasUngs = asignaturaUngs;
 	}
-	
-	
 
 	
 }

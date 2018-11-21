@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.equivalencia.equivalenciaBE.Model.AlumnoModel;
 import com.equivalencia.equivalenciaBE.Model.AlumnoSolicitud;
 import com.equivalencia.equivalenciaBE.Model.AsignaturaEquivalente;
+import com.equivalencia.equivalenciaBE.Model.AsignaturasUngs;
 import com.equivalencia.equivalenciaBE.Model.CarreraModel;
+import com.equivalencia.equivalenciaBE.Model.CodigoAlumno;
 import com.equivalencia.equivalenciaBE.Model.MateriasDocente;
 import com.equivalencia.equivalenciaBE.Model.SolicitudMateriaAlumno;
 import com.equivalencia.equivalenciaBE.Model.SolicitudModel;
@@ -76,9 +78,7 @@ public class SolicitudController {
 			this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
 	        SolicitudPost solicitud=mapper.readValue(solicitudJson, SolicitudPost.class);
-	        
 	        Alumno alumno = solicitud.getAlumno();
-	        
 	        Carrera carrera= this.carreraController.getCarreraPorNombre(solicitud.getCarrera());
 	        
 	        if(!this.alumnoController.existe(alumno)) {
@@ -143,14 +143,13 @@ public class SolicitudController {
 	}
 	
 	@RequestMapping(value = "/getSolicitud", method = RequestMethod.POST)
-	public String getSolicitud(@RequestBody String stringJson) throws JsonProcessingException {
+	public String getSolicitudPorCodigo(@RequestBody String stringJson) throws JsonProcessingException {
 		try {
 			this.mapper= new ObjectMapper();		
 			
-			Folio aux=this.mapper.readValue(stringJson,Folio.class);
-			Folio folio= this.folioController.getOne(aux.getCodigo());
+			CodigoAlumno codigo=this.mapper.readValue(stringJson,CodigoAlumno.class);
 			
-			AlumnoModel alumnoModel=new AlumnoModel();
+			Folio folio= this.folioController.getOne(codigo.getCodigo());
 			
 			AlumnoSolicitud alumnoSolicitud=new AlumnoSolicitud();
 			SolicitudPost ret= new SolicitudPost();
@@ -161,14 +160,15 @@ public class SolicitudController {
 			alumnoSolicitud=guardarAlumnoSolicitud(solicitudes.get(0).getIdAlumno());
 			
 			ret.setAlumno(alumnoSolicitud);
-			for(Solicitud solicitud: solicitudes) {
-				
+			
+			
+			for(Solicitud solicitud: solicitudes) {	
 				SolicitudModel solicitudModel= new SolicitudModel();
-				
 				solicitudModel.setmateriaUngs(this.solicitudService.findMateria(solicitud.getId()));
 				solicitudModel.setAsignaturaEquivalente(cargarAsignatura(this.solicitudService.findMateriaOfrecimiento(solicitud.getId())));
-				solicitudModel.setAlumno(alumnoModel);
+				solicitudModel.setAlumno(alumnoSolicitud);
 				solicitudModel.setEstado(solicitud.getEstado());
+				solicitudModel.setComentario(this.comentarioController.findComentario(solicitud.getId()));
 				solicitudesModel.add(solicitudModel);
 		
 			}
@@ -188,26 +188,38 @@ public class SolicitudController {
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 		
 		MateriasDocente materia= this.mapper.readValue(solicitudJson, MateriasDocente.class);
-		
+
 		List<SolicitudMateriaAlumno> ret = new ArrayList<SolicitudMateriaAlumno>();
 		
 		for(String nombreMateria: materia.getMaterias()) {
-		System.out.println(nombreMateria);
-		Materia mat = this.materiaController.getMateria(nombreMateria);
-		System.out.println(mat.getHoras());	
-		List<SolicitudHasMateriasUngs> solicitudHas = this.materiaController.getSolicitudHasMateriaUngs(mat.getId());
+			Materia mat = this.materiaController.getMateria(nombreMateria);
+			List<SolicitudHasMateriasUngs> solicitudHas = this.materiaController.getSolicitudHasMateriaUngs(mat.getId());
 			
 		for(SolicitudHasMateriasUngs solicitudHasMateria: solicitudHas) {
 				Solicitud soli= this.solicitudService.getOne(solicitudHasMateria.getSegundaClave());
-				System.out.println(soli.getId()+" id "+soli.getIdAlumno());
+				
 				
 				List<SolicitudHasMateria> materiasOfrecidas= new ArrayList<SolicitudHasMateria>();
 				materiasOfrecidas=this.materiaController.getSolicitudHasMateria(soli.getId());
 				
+				SolicitudMateriaAlumno solicitudMateriaAlumno= new SolicitudMateriaAlumno();
+				solicitudMateriaAlumno.setAlumno(guardarModel(soli.getIdAlumno()));
+				
+				List<AsignaturasUngs> asignaturasUngs=new ArrayList<AsignaturasUngs>();
+				
+				AsignaturasUngs asignaturaUngs=new AsignaturasUngs();
+				
+				asignaturaUngs.setMateriaUngs(nombreMateria);
+			
+				//solicitudMateriaAlumno.setComentario(this.comentarioController.findComentario(soli.getId()));
+				
+				List<AsignaturaEquivalente> ofrecimientos= new ArrayList<AsignaturaEquivalente>();
+				
 				for(SolicitudHasMateria materiaOfrecida :materiasOfrecidas) {
 					
-					SolicitudOfrecimiento solicitudOfrecimiento= this.materiaController.findMateriaOfrecimiento(materiaOfrecida.getSegundaClave());
 					AsignaturaEquivalente asignatura = new AsignaturaEquivalente();
+					
+					SolicitudOfrecimiento solicitudOfrecimiento= this.materiaController.findMateriaOfrecimiento(materiaOfrecida.getSegundaClave());
 					
 					asignatura.setAnioAprobacion(solicitudOfrecimiento.getAnioAprobacion());
 					asignatura.setCargaHoraria(solicitudOfrecimiento.getCargaHoraria());
@@ -215,18 +227,18 @@ public class SolicitudController {
 					asignatura.setUniversidad(solicitudOfrecimiento.getUniversidad());
 					asignatura.setDocumentacion(this.planController.getOneOfrecida(solicitudOfrecimiento.getIdPlan()));
 				
-					SolicitudMateriaAlumno solicitudMateriaAlumno= new SolicitudMateriaAlumno();
-					solicitudMateriaAlumno.setAlumno(guardarModel(soli.getIdAlumno()));
-					solicitudMateriaAlumno.setMateriaUngs(nombreMateria);
-					solicitudMateriaAlumno.setComentario(this.comentarioController.findComentario(soli.getId()));
-					solicitudMateriaAlumno.setSolicitudOfrecimiento(asignatura);
+					ofrecimientos.add(asignatura);
 					
-					ret.add(solicitudMateriaAlumno);
 					
 				}
+				asignaturaUngs.setEquivalencias(ofrecimientos);
+				asignaturasUngs.add(asignaturaUngs);
+				solicitudMateriaAlumno.setAsignaturaUngs(asignaturasUngs);
+				ret.add(solicitudMateriaAlumno);
 				
 			}
 		}
+		
 		return this.mapper.writeValueAsString(ret);
 		
 	}
@@ -234,6 +246,7 @@ public class SolicitudController {
 	public AlumnoSolicitud guardarAlumnoSolicitud(long id) {
 		Alumno alumno = this.alumnoController.getOne(id);
 		AlumnoSolicitud alumnoSolicitud=new AlumnoSolicitud();
+		
 		alumnoSolicitud.setNombre(alumno.getNombre());
 		alumnoSolicitud.setApellido(alumno.getApellido());
 		alumnoSolicitud.setEmail(alumno.getEmail());
@@ -242,7 +255,12 @@ public class SolicitudController {
 		alumnoSolicitud.setLegajo(alumno.getLegajo());
 		Carrera carrera=new Carrera();
 		carrera=this.carreraController.getOne(alumno.getIdCarrera());
+		
 		alumnoSolicitud.setCarrera(carrera.getNombre());
+		Certificado certificado=this.certificadoController.getOne(alumno.getIdCertificados());
+		alumnoSolicitud.setConstancia(certificado.getConstancia());
+		alumnoSolicitud.setAnalitico(certificado.getAnalitico());
+		
 		
 		return alumnoSolicitud;
 	}
@@ -252,7 +270,8 @@ public class SolicitudController {
 		AlumnoModel model = new AlumnoModel();
 		model.setNombre(alumno.getNombre());
 		model.setApellido(alumno.getApellido());
-		model.setMail(alumno.getEmail());
+		System.out.println(alumno.getEmail()+" email");
+		model.setEmail(alumno.getEmail());
 		model.setDni(alumno.getDni());
 		model.setTelefono(alumno.getTelefono());
 		model.setLegajo(alumno.getLegajo());

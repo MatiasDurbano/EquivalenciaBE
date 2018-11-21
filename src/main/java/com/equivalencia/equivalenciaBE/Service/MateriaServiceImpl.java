@@ -37,7 +37,15 @@ public class MateriaServiceImpl implements MateriaService {
 
 	@Override
 	public Materia getOne(String nombre) {
-		return this.materiaRepository.getOne(nombre);
+		
+		List<Materia>ret =this.materiaRepository.getOne(nombre);
+		return ret.get(0);
+	}
+
+
+	@Override
+	public List<Materia> findAllMateriasPorNombre(String nombre,String carrera) {
+		return this.materiaRepository.findAllPorNombre(nombre,carrera);
 	}
 
 

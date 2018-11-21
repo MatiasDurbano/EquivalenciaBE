@@ -15,13 +15,17 @@ public class SolicitudPost {
 	 @JsonProperty( "alumno" )
 	private AlumnoSolicitud alumno;
 	
-	 @JsonProperty( "asignaturasUNGS" )
+	@JsonProperty( "asignaturasUNGS" )
 	@JsonDeserialize(as=ArrayList.class, contentAs=SolicitudModel.class)
 	private List<SolicitudModel> solicitudesModel;
 
 	 
 	public Alumno getAlumno() {
 		return alumno.getAlumno();
+	}
+	
+	public AlumnoSolicitud AlumnoSolicitud() {
+		return alumno;
 	}
 
 	public void setAlumno(AlumnoSolicitud alumno) {

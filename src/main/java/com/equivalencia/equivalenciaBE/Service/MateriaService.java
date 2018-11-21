@@ -16,4 +16,7 @@ public interface MateriaService {
 	
 	Materia getOne(String nombre);
 
+	List<Materia> findAllMateriasPorNombre(String nombre, String carrera);
+
+
 }

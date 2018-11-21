@@ -21,6 +21,7 @@ import com.equivalencia.equivalenciaBE.Model.SolicitudPost;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Carrera;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Instituto;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Materia;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.PlanEstudio;
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.MateriasHasCarrera;
 import com.equivalencia.equivalenciaBE.Service.CarreraService;
 import com.equivalencia.equivalenciaBE.Service.InstitutoService;
@@ -41,10 +42,11 @@ public class CarreraController {
 	protected CarreraService carreraService;
 	
 	@Autowired 
-	protected MateriaService materiaService;
+	protected MateriaController materiaController;
 	@Autowired 
 	protected MateriasHasCarreraService materiaHas;
-	
+	@Autowired
+	protected PlanController planController;
 	
 	protected ObjectMapper mapper;
 	
@@ -78,7 +80,7 @@ public class CarreraController {
 	@RequestMapping(value = "/carrerasmaterias", method = RequestMethod.POST)
 	public String enviarCarrerasMaterias(@RequestBody String solicitudJson) throws IOException {
 		this.mapper= new ObjectMapper();
-		System.out.println(solicitudJson +"dasdadassddadssadds");
+		
 		Instituto instituto= this.mapper.readValue(solicitudJson, Instituto.class);
 		
 		System.out.println(instituto.getNombre());
@@ -97,7 +99,7 @@ public class CarreraController {
 			
 			for(MateriasHasCarrera materia: materiaHas) {
 				
-				List<Materia> materias=this.materiaService.findAll(materia.getPrimeraClave());
+				List<Materia> materias=this.materiaController.getAllMateria(materia.getPrimeraClave());
 				
 				//hora nombre;
 				for(Materia mat: materias) {
@@ -130,17 +132,22 @@ public class CarreraController {
 			Carrera carrera= this.carreraService.getOne(materias.getCarrera());
 			List<MateriaModelAdmin> listaMaterias= materias.getMaterias();
 			for(MateriaModelAdmin materiaModeladmin: listaMaterias) {
-				Materia materia=new Materia();
-				materia.setHoras(materiaModeladmin.getHoras());
-				materia.setNombre(materiaModeladmin.getNombre());
-				//PRIMERO DEBO GUARDAR EL PLAN Y DESPUES ASIGNARLE EL ID// PARA CUANDO ESTE 
-				materia.setPlan(1);
+				if(!this.materiaController.existe(materiaModeladmin.getNombre(),materias.getCarrera())) {
+					Materia materia=new Materia();
+					materia.setHoras(materiaModeladmin.getHoras());
+					materia.setNombre(materiaModeladmin.getNombre());
+					//PRIMERO DEBO GUARDAR EL PLAN Y DESPUES ASIGNARLE EL ID// PARA CUANDO ESTE 
+					PlanEstudio plan= new PlanEstudio();
+					plan.setPlan(materiaModeladmin.getPlan());
+					plan=this.planController.savePlanUngs(plan);
 				
-				materia=this.materiaService.save(materia);
-				MateriasHasCarrera materiaHas= new MateriasHasCarrera(materia.getId(),carrera.getId());
-				System.out.println(materiaHas.getPrimeraClave()+" : "+materiaHas.getSegundaClave());
+					materia.setPlan(plan.getId());
 				
-				materiaHas=this.materiaHas.save(materiaHas);
+					materia=this.materiaController.save(materia);
+					MateriasHasCarrera materiaHas= new MateriasHasCarrera(materia.getId(),carrera.getId());
+				
+					materiaHas=this.materiaHas.save(materiaHas);
+					}
 			}
 			
 		}

@@ -10,6 +10,7 @@ public class MateriaModelAdmin {
 	@JsonProperty( "horas" )
 	private int horas;
 	
+	@JsonProperty( "plan" )
 	private String plan;
 
 	public String getNombre() {
@@ -26,6 +27,14 @@ public class MateriaModelAdmin {
 
 	public void setHoras(int horas) {
 		this.horas = horas;
+	}
+
+	public String getPlan() {
+		return plan;
+	}
+
+	public void setPlan(String plan) {
+		this.plan = plan;
 	}
 
 }

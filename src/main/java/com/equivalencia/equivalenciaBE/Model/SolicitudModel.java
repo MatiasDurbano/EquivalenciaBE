@@ -17,7 +17,7 @@ public class SolicitudModel {
 	@JsonDeserialize(as=ArrayList.class, contentAs=AsignaturaEquivalente.class)
 	private List<AsignaturaEquivalente> solicitudOfrecimiento;
 	
-	private AlumnoModel alumno;
+	private AlumnoSolicitud alumno;
 	
 	private String estado;
 	
@@ -48,11 +48,11 @@ public class SolicitudModel {
 	}
 
 
-	public AlumnoModel getAlumno() {
+	public AlumnoSolicitud getAlumno() {
 		return alumno;
 	}
 
-	public void setAlumno(AlumnoModel alumno) {
+	public void setAlumno(AlumnoSolicitud alumno) {
 		this.alumno = alumno;
 	}
 

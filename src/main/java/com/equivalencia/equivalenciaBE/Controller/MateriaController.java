@@ -1,5 +1,6 @@
 package com.equivalencia.equivalenciaBE.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,18 @@ public class MateriaController {
 	@Autowired 
 	protected SolicitudHasMateriaUngsService solicitudHasMateriaUngs;
 	
+	public Materia save(Materia materia) {
+		return this.materiaService.save(materia);
+	}
+	
 	
 	public Materia getMateria(String materia) {
 		return this.materiaService.getOne(materia);
 	}
-
+	
+	public List<Materia> getAllMateria(long id) {
+		return this.materiaService.findAll(id);
+	}
 
 	public List<SolicitudHasMateriasUngs> getSolicitudHasMateriaUngs(long id) {
 		return this.solicitudHasMateriaUngs.findAll(id);
@@ -53,6 +61,20 @@ public class MateriaController {
 		SolicitudHasMateriasUngs solicitudHas = new SolicitudHasMateriasUngs(id,id2);
 		this.solicitudHasMateriaUngs.save(solicitudHas);
 	}
+
+
+	public boolean existe(String nombre,String carrera) {
+		List<Materia> ret = new ArrayList<Materia>();
+		ret= this.materiaService.findAllMateriasPorNombre(nombre,carrera);
+		if(ret.size()>=1) {
+			return true;
+		}
+		return false;
+		
+	}
+
+
+
 	
 	
 }

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 //ESTA CLASE SOLO SIRVE PARA OBTENER UN ARREGLO DE MATERIAS QUE DICTA EL DOCENTE
 public class MateriasDocente {
 
-	@JsonProperty( "nombre" )
+	@JsonProperty( "listaMateria" )
 	@JsonDeserialize(as=ArrayList.class, contentAs=String.class)
 	private List<String> materias;
 

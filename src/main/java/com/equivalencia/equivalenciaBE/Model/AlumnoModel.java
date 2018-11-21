@@ -14,7 +14,7 @@ public class AlumnoModel extends ParentEntity {
 	
 	private String apellido;
 	
-	private String mail;
+	private String email;
 	
 	private String telefono;
 
@@ -42,12 +42,12 @@ public class AlumnoModel extends ParentEntity {
 		this.apellido = apellido;
 	}
 
-	public String getMail() {
-		return mail;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setEmail(String mail) {
+		this.email = mail;
 	}
 
 	public String getTelefono() {
