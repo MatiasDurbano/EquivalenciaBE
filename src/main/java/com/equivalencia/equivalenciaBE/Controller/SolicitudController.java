@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.equivalencia.equivalenciaBE.Model.AlumnoModel;
 import com.equivalencia.equivalenciaBE.Model.AlumnoSolicitud;
 import com.equivalencia.equivalenciaBE.Model.AsignaturaEquivalente;
-import com.equivalencia.equivalenciaBE.Model.AsignaturasUngs;
+import com.equivalencia.equivalenciaBE.Model.AsignaturasUNGS;
 import com.equivalencia.equivalenciaBE.Model.CarreraModel;
 import com.equivalencia.equivalenciaBE.Model.CodigoAlumno;
 import com.equivalencia.equivalenciaBE.Model.MateriasDocente;
@@ -217,11 +217,11 @@ public class SolicitudController {
 				SolicitudMateriaAlumno solicitudMateriaAlumno= new SolicitudMateriaAlumno();
 				solicitudMateriaAlumno.setAlumno(guardarModel(soli.getIdAlumno()));
 				
-				List<AsignaturasUngs> asignaturasUngs=new ArrayList<AsignaturasUngs>();
+				List<AsignaturasUNGS> asignaturasUNGS=new ArrayList<AsignaturasUNGS>();
 				
-				AsignaturasUngs asignaturaUngs=new AsignaturasUngs();
+				AsignaturasUNGS asignaturaUNGS=new AsignaturasUNGS();
 				
-				asignaturaUngs.setMateriaUngs(nombreMateria);
+				asignaturaUNGS.setMateriaUngs(nombreMateria);
 			
 				//solicitudMateriaAlumno.setComentario(this.comentarioController.findComentario(soli.getId()));
 				
@@ -243,9 +243,9 @@ public class SolicitudController {
 					
 					
 				}
-				asignaturaUngs.setEquivalencias(ofrecimientos);
-				asignaturasUngs.add(asignaturaUngs);
-				solicitudMateriaAlumno.setAsignaturaUngs(asignaturasUngs);
+				asignaturaUNGS.setEquivalencias(ofrecimientos);
+				asignaturasUNGS.add(asignaturaUNGS);
+				solicitudMateriaAlumno.setAsignaturasUNGS(asignaturasUNGS);
 				ret.add(solicitudMateriaAlumno);
 				
 			}

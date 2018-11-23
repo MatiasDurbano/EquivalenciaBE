@@ -7,7 +7,7 @@ import com.equivalencia.equivalenciaBE.Model.TablasDb.Comentario;
 
 public class SolicitudMateriaAlumno {
 
-	private List<AsignaturasUngs> asignaturasUngs;
+	private List<AsignaturasUNGS> asignaturasUngs;
 	
 	private AlumnoModel alumno;
 	
@@ -30,11 +30,11 @@ public class SolicitudMateriaAlumno {
 		this.estado = estado;
 	}
 
-	public List<AsignaturasUngs> getAsignaturaUngs() {
+	public List<AsignaturasUNGS> getAsignaturasUNGS() {
 		return asignaturasUngs;
 	}
 
-	public void setAsignaturaUngs(List<AsignaturasUngs> asignaturaUngs) {
+	public void setAsignaturasUNGS(List<AsignaturasUNGS> asignaturaUngs) {
 		this.asignaturasUngs = asignaturaUngs;
 	}
 

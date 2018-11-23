@@ -2,7 +2,7 @@ package com.equivalencia.equivalenciaBE.Model;
 
 import java.util.List;
 
-public class AsignaturasUngs {
+public class AsignaturasUNGS {
 
 	private String materiaUngs;
 	
