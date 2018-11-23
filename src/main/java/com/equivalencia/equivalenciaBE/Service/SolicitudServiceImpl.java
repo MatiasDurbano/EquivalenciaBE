@@ -39,7 +39,7 @@ public class SolicitudServiceImpl implements SolicitudService {
 	@Override
 	public void SolicitudHasMateriasOfrecidas(long id, List<Long> idsOfrecimiento) {
 		for(Long idOfrecimiento: idsOfrecimiento) {
-			
+			System.out.println("agrege: "+id +" "+idOfrecimiento);
 			this.solicitudesHasMateriasRepository.save(new SolicitudHasMateria(id,idOfrecimiento));
 			
 		}

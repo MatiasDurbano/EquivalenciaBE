@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class SolicitudModel {
 	
-	@JsonProperty( "nombre" )
+	@JsonProperty( "materiaUngs" )
 	private String materiaUngs;
 	
 	@JsonProperty( "equivalencias" )
@@ -21,6 +21,7 @@ public class SolicitudModel {
 	
 	private String estado;
 	
+	@JsonProperty( "comentario" )
 	private Comentario comentario;
 	
 	public String getmateriaUngs() {

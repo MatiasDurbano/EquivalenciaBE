@@ -34,6 +34,7 @@ import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMat
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateriasUngs;
 import com.equivalencia.equivalenciaBE.Service.SolicitudService;
 import com.equivalencia.equivalenciaBE.Utilities.Codificador;
+import com.equivalencia.equivalenciaBE.Utilities.EnviadorMail;
 import com.equivalencia.equivalenciaBE.Utilities.EstadoSolicitud;
 import com.equivalencia.equivalenciaBE.Utilities.RestResponse;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -70,13 +71,16 @@ public class SolicitudController {
 	
 	protected ObjectMapper mapper;
 	
+	protected EnviadorMail enviadorMail;
+	
 	
 	@RequestMapping(value = "/solicitud", method = RequestMethod.POST)
 	public String addSolicitud(@RequestBody String solicitudJson) throws JsonParseException, JsonMappingException, IOException{
 			this.mapper= new ObjectMapper();
 			
 			this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
+			this.mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+			
 	        SolicitudPost solicitud=mapper.readValue(solicitudJson, SolicitudPost.class);
 	        Alumno alumno = solicitud.getAlumno();
 	        Carrera carrera= this.carreraController.getCarreraPorNombre(solicitud.getCarrera());
@@ -96,10 +100,10 @@ public class SolicitudController {
 	        
 	        	List<SolicitudModel> solicitudes = solicitud.getSolicitudesModel();
 	        
-	        	List<Long> idsOfrecimiento= new ArrayList<Long>();
 	        
 	        	for(SolicitudModel solicitudModel: solicitudes) {
-	        		
+	        		List<Long> idsOfrecimiento= new ArrayList<Long>();
+	        		System.out.println(solicitudModel.getmateriaUngs()+": ");
 	        		for(AsignaturaEquivalente asignaturaEquivalente: solicitudModel.getAsignaturaEquivalente()) {
 	        			
 	        			PlanMateriaOfrecida plan= new PlanMateriaOfrecida();
@@ -113,8 +117,12 @@ public class SolicitudController {
 	        			solicitudOfrecimiento.setUniversidad(asignaturaEquivalente.getUniversidad());
 	        			solicitudOfrecimiento.setIdPlan(plan.getId());
 	        			
+	        			System.out.println(asignaturaEquivalente.getNombre()+", ");
+	        			
 	        			idsOfrecimiento.add(this.solicitudService.save(solicitudOfrecimiento).getId());
+	        			
 	        		}
+	        
 	        	 	Comentario comentario = this.comentarioController.crearComentario();
 	    	        
 		        	Solicitud soli= new Solicitud();
@@ -123,7 +131,6 @@ public class SolicitudController {
 		        	soli.setComentario(comentario.getId());
 		        	soli.setEstado(EstadoSolicitud.En_espera);
 		        	soli= this.solicitudService.save(soli);
-		        	
 		        	Materia materia=this.materiaController.getMateria(solicitudModel.getmateriaUngs());
 		        	
 		        	this.materiaController.SolicitudHasMateriasUngs(materia.getId(),soli.getId());
@@ -132,7 +139,8 @@ public class SolicitudController {
 			        
 	        		
 	        	}
-	       
+	        	System.out.println(alumno.getEmail()+ " "+folio.getCodigo());
+	        	this.enviadorMail.enviarConGMail(alumno.getEmail(), folio.getCodigo());
 	        	return this.mapper.writeValueAsString(folio.getCodigo());
 	        }
 	        
