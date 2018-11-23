@@ -156,33 +156,38 @@ public class SolicitudController {
 			this.mapper= new ObjectMapper();		
 			
 			CodigoAlumno codigo=this.mapper.readValue(stringJson,CodigoAlumno.class);
+			if(this.folioController.getOne(codigo.getCodigo()) != null) {
+				Folio folio= this.folioController.getOne(codigo.getCodigo());
 			
-			Folio folio= this.folioController.getOne(codigo.getCodigo());
+				AlumnoSolicitud alumnoSolicitud=new AlumnoSolicitud();
+				SolicitudPost ret= new SolicitudPost();
 			
-			AlumnoSolicitud alumnoSolicitud=new AlumnoSolicitud();
-			SolicitudPost ret= new SolicitudPost();
+				List<Solicitud> solicitudes = this.solicitudService.findAll(folio.getId());
+				List<SolicitudModel> solicitudesModel = new ArrayList<SolicitudModel>();
 			
-			List<Solicitud> solicitudes = this.solicitudService.findAll(folio.getId());
-			List<SolicitudModel> solicitudesModel = new ArrayList<SolicitudModel>();
+				alumnoSolicitud=guardarAlumnoSolicitud(solicitudes.get(0).getIdAlumno());
 			
-			alumnoSolicitud=guardarAlumnoSolicitud(solicitudes.get(0).getIdAlumno());
-			
-			ret.setAlumno(alumnoSolicitud);
+				ret.setAlumno(alumnoSolicitud);
 			
 			
-			for(Solicitud solicitud: solicitudes) {	
-				SolicitudModel solicitudModel= new SolicitudModel();
-				solicitudModel.setmateriaUngs(this.solicitudService.findMateria(solicitud.getId()));
-				solicitudModel.setAsignaturaEquivalente(cargarAsignatura(this.solicitudService.findMateriaOfrecimiento(solicitud.getId())));
-				solicitudModel.setAlumno(alumnoSolicitud);
-				solicitudModel.setEstado(solicitud.getEstado());
-				solicitudModel.setComentario(this.comentarioController.findComentario(solicitud.getId()));
-				solicitudesModel.add(solicitudModel);
+				for(Solicitud solicitud: solicitudes) {	
+					SolicitudModel solicitudModel= new SolicitudModel();
+					solicitudModel.setmateriaUngs(this.solicitudService.findMateria(solicitud.getId()));
+					solicitudModel.setAsignaturaEquivalente(cargarAsignatura(this.solicitudService.findMateriaOfrecimiento(solicitud.getId())));
+					solicitudModel.setAlumno(alumnoSolicitud);
+					solicitudModel.setEstado(solicitud.getEstado());
+					solicitudModel.setComentario(this.comentarioController.findComentario(solicitud.getId()));
+					solicitudesModel.add(solicitudModel);
 		
+				}
+			
+				ret.setsolicitudesModel(solicitudesModel);
+				return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),ret));
+			}
+			else {
+				return this.mapper.writeValueAsString(new RestResponse(HttpStatus.NOT_FOUND.value(),"codigo no existente"));
 			}
 			
-			ret.setsolicitudesModel(solicitudesModel);
-			return this.mapper.writeValueAsString(ret);
 			
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.equivalencia.equivalenciaBE.Model.Administrador;
+import com.equivalencia.equivalenciaBE.Model.UsuarioResponse;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Admin;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Usuario;
@@ -58,7 +59,9 @@ public class UsuarioController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String getUsuario(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException{
 		this.mapper= new ObjectMapper();
-		String ret="{}";
+		
+		UsuarioResponse ret=new UsuarioResponse();
+		
 		Usuario usuario= this.mapper.readValue(usuarioJson, Usuario.class);
 		List<Usuario> usuarios= this.usuarioService.findAll();
 		
@@ -68,16 +71,33 @@ public class UsuarioController {
 			switch(user.getTipo()) {
 				case "Docente" :
 						Docente docente = this.docenteController.findOne(user.getId());	
-						ret = this.mapper.writeValueAsString(docente);
-						return ret;
+						ret.setTipo(1);
+						ret.setNombre(docente.getNombre());
+						ret.setApellido(docente.getApellido());
+						ret.setInstituto(this.institutoService.getOne(docente.getIdInsituto()).getNombre());
+						ret.setEmail(docente.getMail());
+						break;
+						
 				case "Admin":
 						Admin admin = this.adminController.findOne(user.getId());
 						Administrador administrador= this.transform(admin);
-						ret = this.mapper.writeValueAsString(administrador);
-						return ret;
-					}
-		}		
-		return ret;
+						ret.setTipo(0);
+						ret.setNombre(administrador.getNombre());
+						ret.setApellido(administrador.getApellido());
+						ret.setInstituto(administrador.getInstituto());
+						
+						break;
+			}
+			
+			return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),ret));
+			
+		}
+		
+		else {
+			return this.mapper.writeValueAsString(new RestResponse(HttpStatus.BAD_REQUEST.value(),ret));
+			
+		}
+		
 	}
 	public Administrador transform(Admin ad) {
 		Administrador admin= new Administrador();

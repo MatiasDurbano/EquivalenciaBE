@@ -4,14 +4,14 @@ public class RestResponse {
 
 	
 	private Integer responseCode;
-	private String message;
+	private Object message;
 	
 	public RestResponse(Integer responseCode) {
 		super();
 		this.responseCode=responseCode;
 	}
 	
-	public RestResponse(Integer responseCode,String message) {
+	public RestResponse(Integer responseCode,Object message) {
 		super();
 		this.message=message;
 		this.responseCode=responseCode;
@@ -23,7 +23,7 @@ public class RestResponse {
 	public void setResponse(Integer response) {
 		this.responseCode = response;
 	}
-	public String getMessage() {
+	public Object getMessage() {
 		return message;
 	}
 	public void setMessage(String message) {
