@@ -116,7 +116,6 @@ public class CarreraController {
 		PostCarreraMateria post = new PostCarreraMateria();
 		post.setMateriaCarrera(materiaCarrera);
 		String ret=this.mapper.writeValueAsString(materiaCarrera);
-		System.out.println(ret);
 		return  ret;
 		
 	}

@@ -27,4 +27,8 @@ public interface MateriaRepository extends JpaRepository<Materia,Long> {
 	@Query(value = "Select * FROM materias, carrera,materias_has_carrera where carrera.nombre=:carrera and carrera.id=materias_has_carrera.idcarrera and materias_has_carrera.idmateria=materias.id and materias.nombre=:nombre", nativeQuery = true)
 	List<Materia> findAllPorNombre(@Param("nombre")String nombre,@Param("carrera")String carrera);
 
+	
+	@Query(value = "Select * FROM materias where materias.id=:id", nativeQuery = true)
+	Materia encontrarPorClave(@Param("id")long segundaClave);
+
 }

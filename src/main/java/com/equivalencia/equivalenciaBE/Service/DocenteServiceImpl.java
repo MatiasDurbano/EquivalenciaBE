@@ -38,4 +38,9 @@ public class DocenteServiceImpl  implements DocenteService {
 		}
 		return false;
 	}
+
+	@Override
+	public Docente encontrarPorMail(String email) {
+		return this.docenteRepository.encontrarPorEMail(email);
+	}
 }

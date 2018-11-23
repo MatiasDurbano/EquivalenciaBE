@@ -49,4 +49,10 @@ public class MateriaServiceImpl implements MateriaService {
 	}
 
 
+	@Override
+	public Materia findOne(long segundaClave) {
+		return this.materiaRepository.encontrarPorClave(segundaClave);
+	}
+
+
 }

@@ -2,9 +2,9 @@ package com.equivalencia.equivalenciaBE.Service;
 
 import java.util.List;
 
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Materia;
-import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.MateriasHasCarrera;
-import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateriasUngs;
+
 
 public interface MateriaService {
 	
@@ -17,6 +17,9 @@ public interface MateriaService {
 	Materia getOne(String nombre);
 
 	List<Materia> findAllMateriasPorNombre(String nombre, String carrera);
+
+	Materia findOne(long segundaClave);
+
 
 
 }

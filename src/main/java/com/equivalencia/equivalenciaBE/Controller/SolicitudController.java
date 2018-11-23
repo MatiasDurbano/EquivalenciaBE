@@ -117,7 +117,6 @@ public class SolicitudController {
 	        			solicitudOfrecimiento.setUniversidad(asignaturaEquivalente.getUniversidad());
 	        			solicitudOfrecimiento.setIdPlan(plan.getId());
 	        			
-	        			System.out.println(asignaturaEquivalente.getNombre()+", ");
 	        			
 	        			idsOfrecimiento.add(this.solicitudService.save(solicitudOfrecimiento).getId());
 	        			
@@ -139,7 +138,7 @@ public class SolicitudController {
 			        
 	        		
 	        	}
-	        	System.out.println(alumno.getEmail()+ " "+folio.getCodigo());
+	        	
 	        	this.enviadorMail.enviarConGMail(alumno.getEmail(), folio.getCodigo());
 	        	return this.mapper.writeValueAsString(folio.getCodigo());
 	        }
@@ -201,13 +200,13 @@ public class SolicitudController {
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 		
 		MateriasDocente materia= this.mapper.readValue(solicitudJson, MateriasDocente.class);
-
+		
 		List<SolicitudMateriaAlumno> ret = new ArrayList<SolicitudMateriaAlumno>();
 		
 		for(String nombreMateria: materia.getMaterias()) {
 			Materia mat = this.materiaController.getMateria(nombreMateria);
 			List<SolicitudHasMateriasUngs> solicitudHas = this.materiaController.getSolicitudHasMateriaUngs(mat.getId());
-			
+		
 		for(SolicitudHasMateriasUngs solicitudHasMateria: solicitudHas) {
 				Solicitud soli= this.solicitudService.getOne(solicitudHasMateria.getSegundaClave());
 				
@@ -283,7 +282,6 @@ public class SolicitudController {
 		AlumnoModel model = new AlumnoModel();
 		model.setNombre(alumno.getNombre());
 		model.setApellido(alumno.getApellido());
-		System.out.println(alumno.getEmail()+" email");
 		model.setEmail(alumno.getEmail());
 		model.setDni(alumno.getDni());
 		model.setTelefono(alumno.getTelefono());

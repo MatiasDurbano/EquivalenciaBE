@@ -13,4 +13,6 @@ public interface DocenteService {
 	Docente findOne(Long id);
 
 	boolean existe(Docente docente);
+
+	Docente encontrarPorMail(String email);
 }
