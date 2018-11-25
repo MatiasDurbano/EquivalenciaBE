@@ -26,9 +26,15 @@ public class DocenteServiceImpl  implements DocenteService {
 	}
 	
 	@Override
-	public Docente findOne(Long id) {
+	public Docente buscarPorUsuario(Long id) {
 		return this.docenteRepository.getOne(id);
 	}
+	
+	@Override
+	public Docente buscarPorId(Long id) {
+		return this.docenteRepository.getDocente(id);
+	}
+
 
 	@Override
 	public boolean existe(Docente docente) {
@@ -43,4 +49,10 @@ public class DocenteServiceImpl  implements DocenteService {
 	public Docente encontrarPorMail(String email) {
 		return this.docenteRepository.encontrarPorEMail(email);
 	}
+
+	@Override
+	public List<Docente> buscarPorInstituto(long id) {
+		return this.docenteRepository.buscarPorInstituto(id);
+	}
+
 }

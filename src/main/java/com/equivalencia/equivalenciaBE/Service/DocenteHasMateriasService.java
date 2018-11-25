@@ -8,4 +8,10 @@ public interface DocenteHasMateriasService {
 
 	List<DocenteHasMaterias> encontrarMateriasDeDocente(long docente);
 
+	List<DocenteHasMaterias> encontrarDocentesDeMateria(long materia);
+
+	void borrarMateriasDocente(long id);
+
+	void save(DocenteHasMaterias docenteHas);
+
 }

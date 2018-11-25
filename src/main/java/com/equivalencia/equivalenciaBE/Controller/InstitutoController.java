@@ -22,6 +22,10 @@ public class InstitutoController {
 	
 	protected ObjectMapper mapper;
 	
+	public Instituto obtenerInstitutoPorNombre(String nombre) {
+		return this.insitutoService.getOne(nombre);
+	}
+	
 	@RequestMapping(value = "/institutos", method = RequestMethod.GET)
 	public String getInstitutos() throws JsonProcessingException {
 		this.mapper= new ObjectMapper();

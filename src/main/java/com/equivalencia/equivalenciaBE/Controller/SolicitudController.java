@@ -25,11 +25,13 @@ import com.equivalencia.equivalenciaBE.Model.TablasDb.Alumno;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Carrera;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Certificado;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Comentario;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Folio;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Materia;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.PlanMateriaOfrecida;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Solicitud;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.SolicitudOfrecimiento;
+import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.DocenteHasMaterias;
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateria;
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateriasUngs;
 import com.equivalencia.equivalenciaBE.Service.SolicitudService;
@@ -103,7 +105,6 @@ public class SolicitudController {
 	        
 	        	for(SolicitudModel solicitudModel: solicitudes) {
 	        		List<Long> idsOfrecimiento= new ArrayList<Long>();
-	        		System.out.println(solicitudModel.getmateriaUngs()+": ");
 	        		for(AsignaturaEquivalente asignaturaEquivalente: solicitudModel.getAsignaturaEquivalente()) {
 	        			
 	        			PlanMateriaOfrecida plan= new PlanMateriaOfrecida();
@@ -121,7 +122,11 @@ public class SolicitudController {
 	        			idsOfrecimiento.add(this.solicitudService.save(solicitudOfrecimiento).getId());
 	        			
 	        		}
-	        
+	        		
+	        		
+	        		//busco  id de materia de la ungss
+	        		Materia materia=this.materiaController.getMateriaPorNombre(solicitudModel.getmateriaUngs());
+	        		
 	        	 	Comentario comentario = this.comentarioController.crearComentario();
 	    	        
 		        	Solicitud soli= new Solicitud();
@@ -130,16 +135,21 @@ public class SolicitudController {
 		        	soli.setComentario(comentario.getId());
 		        	soli.setEstado(EstadoSolicitud.En_espera);
 		        	soli= this.solicitudService.save(soli);
-		        	Materia materia=this.materiaController.getMateria(solicitudModel.getmateriaUngs());
+		        	
 		        	
 		        	this.materiaController.SolicitudHasMateriasUngs(materia.getId(),soli.getId());
 		        	
 		        	this.solicitudService.SolicitudHasMateriasOfrecidas(soli.getId(),idsOfrecimiento);
-			        
+		        	
+		        	//busco los docente que dictan esa materia
+	        		this.enviarMailADocentes(this.materiaController.BuscarMateriasDeDocente(materia.getId()));
+	        		
+		        	
+		        	
 	        		
 	        	}
 	        	
-	        	this.enviadorMail.enviarConGMail(alumno.getEmail(), folio.getCodigo());
+	        	this.enviarMailAAlumno(alumno.getEmail(), folio.getCodigo());
 	        	return this.mapper.writeValueAsString(folio.getCodigo());
 	        }
 	        
@@ -204,50 +214,54 @@ public class SolicitudController {
 		List<SolicitudMateriaAlumno> ret = new ArrayList<SolicitudMateriaAlumno>();
 		
 		for(String nombreMateria: materia.getMaterias()) {
-			Materia mat = this.materiaController.getMateria(nombreMateria);
+			Materia mat = this.materiaController.getMateriaPorNombre(nombreMateria);
 			List<SolicitudHasMateriasUngs> solicitudHas = this.materiaController.getSolicitudHasMateriaUngs(mat.getId());
-		
-		for(SolicitudHasMateriasUngs solicitudHasMateria: solicitudHas) {
-				Solicitud soli= this.solicitudService.getOne(solicitudHasMateria.getSegundaClave());
-				
-				
-				List<SolicitudHasMateria> materiasOfrecidas= new ArrayList<SolicitudHasMateria>();
-				materiasOfrecidas=this.materiaController.getSolicitudHasMateria(soli.getId());
-				
-				SolicitudMateriaAlumno solicitudMateriaAlumno= new SolicitudMateriaAlumno();
-				solicitudMateriaAlumno.setAlumno(guardarModel(soli.getIdAlumno()));
-				
-				List<AsignaturasUNGS> asignaturasUNGS=new ArrayList<AsignaturasUNGS>();
-				
-				AsignaturasUNGS asignaturaUNGS=new AsignaturasUNGS();
-				
-				asignaturaUNGS.setMateriaUngs(nombreMateria);
 			
-				//solicitudMateriaAlumno.setComentario(this.comentarioController.findComentario(soli.getId()));
+			
+		for(SolicitudHasMateriasUngs solicitudHasMateria: solicitudHas) {
+				Solicitud soli= this.solicitudService.getSolicitudEnEspera(solicitudHasMateria.getSegundaClave());
+				if(soli !=null) {
 				
-				List<AsignaturaEquivalente> ofrecimientos= new ArrayList<AsignaturaEquivalente>();
+					List<SolicitudHasMateria> materiasOfrecidas= new ArrayList<SolicitudHasMateria>();
+					materiasOfrecidas=this.materiaController.getSolicitudHasMateria(soli.getId());
 				
-				for(SolicitudHasMateria materiaOfrecida :materiasOfrecidas) {
-					
-					AsignaturaEquivalente asignatura = new AsignaturaEquivalente();
-					
-					SolicitudOfrecimiento solicitudOfrecimiento= this.materiaController.findMateriaOfrecimiento(materiaOfrecida.getSegundaClave());
-					
-					asignatura.setAnioAprobacion(solicitudOfrecimiento.getAnioAprobacion());
-					asignatura.setCargaHoraria(solicitudOfrecimiento.getCargaHoraria());
-					asignatura.setNombre(solicitudOfrecimiento.getNombre());
-					asignatura.setUniversidad(solicitudOfrecimiento.getUniversidad());
-					asignatura.setDocumentacion(this.planController.getOneOfrecida(solicitudOfrecimiento.getIdPlan()));
+					SolicitudMateriaAlumno solicitudMateriaAlumno= new SolicitudMateriaAlumno();
+					solicitudMateriaAlumno.setAlumno(guardarModel(soli.getIdAlumno()));
 				
-					ofrecimientos.add(asignatura);
-					
-					
-				}
-				asignaturaUNGS.setEquivalencias(ofrecimientos);
-				asignaturasUNGS.add(asignaturaUNGS);
-				solicitudMateriaAlumno.setAsignaturasUNGS(asignaturasUNGS);
-				ret.add(solicitudMateriaAlumno);
+					List<AsignaturasUNGS> asignaturasUNGS=new ArrayList<AsignaturasUNGS>();
 				
+					AsignaturasUNGS asignaturaUNGS=new AsignaturasUNGS();
+				
+					asignaturaUNGS.setMateriaUngs(nombreMateria);
+			
+					//solicitudMateriaAlumno.setComentario(this.comentarioController.findComentario(soli.getId()));
+				
+					List<AsignaturaEquivalente> ofrecimientos= new ArrayList<AsignaturaEquivalente>();
+				
+					for(SolicitudHasMateria materiaOfrecida :materiasOfrecidas) {
+					
+						AsignaturaEquivalente asignatura = new AsignaturaEquivalente();
+					
+						SolicitudOfrecimiento solicitudOfrecimiento= this.materiaController.findMateriaOfrecimiento(materiaOfrecida.getSegundaClave());
+					
+						asignatura.setAnioAprobacion(solicitudOfrecimiento.getAnioAprobacion());
+						asignatura.setCargaHoraria(solicitudOfrecimiento.getCargaHoraria());
+						asignatura.setNombre(solicitudOfrecimiento.getNombre());
+						asignatura.setUniversidad(solicitudOfrecimiento.getUniversidad());
+						asignatura.setDocumentacion(this.planController.getOneOfrecida(solicitudOfrecimiento.getIdPlan()));
+					
+						ofrecimientos.add(asignatura);
+						
+						
+						}
+					
+					
+					asignaturaUNGS.setEquivalencias(ofrecimientos);
+					asignaturasUNGS.add(asignaturaUNGS);
+					solicitudMateriaAlumno.setAsignaturasUNGS(asignaturasUNGS);
+					ret.add(solicitudMateriaAlumno);
+					}
+					
 			}
 		}
 		
@@ -311,5 +325,19 @@ public class SolicitudController {
 		}
 		
 		return ret;
+	}
+	
+	public void enviarMailADocentes(List<Docente> docentes) {
+		this.enviadorMail=new EnviadorMail();
+		System.out.println(docentes.size());
+		for(Docente docente : docentes) {
+			System.out.println(docente.getNombre()+" "+docente.getMail() );
+			this.enviadorMail.enviarADocente(docente.getMail());
+		}
+		
+	}
+	public void enviarMailAAlumno(String email, String codigo) {
+		this.enviadorMail=new EnviadorMail();
+		this.enviadorMail.enviarAAlumno(email, codigo);
 	}
 }

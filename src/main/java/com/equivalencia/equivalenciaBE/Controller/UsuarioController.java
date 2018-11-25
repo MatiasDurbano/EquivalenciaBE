@@ -70,7 +70,7 @@ public class UsuarioController {
 			
 			switch(user.getTipo()) {
 				case "Docente" :
-						Docente docente = this.docenteController.findOne(user.getId());	
+						Docente docente = this.docenteController.buscarPorUsuario(user.getId());	
 						ret.setTipo(1);
 						ret.setNombre(docente.getNombre());
 						ret.setApellido(docente.getApellido());

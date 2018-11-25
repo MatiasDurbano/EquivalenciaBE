@@ -83,8 +83,6 @@ public class CarreraController {
 		
 		Instituto instituto= this.mapper.readValue(solicitudJson, Instituto.class);
 		
-		System.out.println(instituto.getNombre());
-		
 		List<Carrera> Carreras= this.carreraService.findAllporInstituto(instituto.getNombre());
 		
 		//el return
@@ -97,18 +95,11 @@ public class CarreraController {
 			carreraMateria.setCarrera(carrera.getNombre());
 			List<MateriaModelAdmin> materiaModelAdmin = new ArrayList<MateriaModelAdmin>();
 			
-			for(MateriasHasCarrera materia: materiaHas) {
-				
-				List<Materia> materias=this.materiaController.getAllMateria(materia.getPrimeraClave());
-				
-				//hora nombre;
-				for(Materia mat: materias) {
-					materiaModelAdmin.add(this.getMateriaModelAdmin(mat));	
-				}
-				
+			for(MateriasHasCarrera materia: materiaHas) {			
+				Materia materias=this.materiaController.materiaPorId(materia.getPrimeraClave());	
+				materiaModelAdmin.add(this.getMateriaModelAdmin(materias));	
 				carreraMateria.setMaterias(materiaModelAdmin);
-				
-				
+	
 			}
 			materiaCarrera.add(carreraMateria);
 			

@@ -71,6 +71,11 @@ public class SolicitudServiceImpl implements SolicitudService {
 			return this.solicitudRepository.getOne(segundaClave);
 	}
 
+	@Override
+	public Solicitud getSolicitudEnEspera(long segundaClave) {
+		return this.solicitudRepository.getEnEspera(segundaClave);
+	}
+
 
 	
 	

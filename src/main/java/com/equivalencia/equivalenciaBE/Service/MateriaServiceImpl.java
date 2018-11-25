@@ -25,8 +25,8 @@ public class MateriaServiceImpl implements MateriaService {
 
 
 	@Override
-	public List<Materia> findAll(long primeraClave) {
-		return this.materiaRepository.findAll(primeraClave);
+	public Materia findAll(long primeraClave) {
+		return this.materiaRepository.encontrarPorClave(primeraClave);
 	}
 
 	@Override

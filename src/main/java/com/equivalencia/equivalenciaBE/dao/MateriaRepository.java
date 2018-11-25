@@ -18,9 +18,6 @@ public interface MateriaRepository extends JpaRepository<Materia,Long> {
 	@Query(value = "Select * FROM materias, instituto where instituto.nombre = :nombre and carrera.idinstituto = instituto.id ", nativeQuery = true)
 	List<Materia> findAll(@Param("nombre")String carrera);
 
-	@Query(value = "Select * FROM materias where materias.id=:id", nativeQuery = true)
-	List<Materia> findAll(@Param("id")long primeraClave);
-
 	@Query(value = "Select distinct * FROM materias where materias.nombre=:nombre", nativeQuery = true)
 	List<Materia> getOne(@Param("nombre")String nombre);
 
@@ -30,5 +27,10 @@ public interface MateriaRepository extends JpaRepository<Materia,Long> {
 	
 	@Query(value = "Select * FROM materias where materias.id=:id", nativeQuery = true)
 	Materia encontrarPorClave(@Param("id")long segundaClave);
+	
+	@Query(value = "Select * FROM materias where materias.nombre=:nombre", nativeQuery = true)
+	Materia encontrarPorNombre(@Param("nombre")String nombre);
+
+	
 
 }

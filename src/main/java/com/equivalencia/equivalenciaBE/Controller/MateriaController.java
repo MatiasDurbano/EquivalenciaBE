@@ -56,11 +56,12 @@ public class MateriaController {
 	}
 	
 	
-	public Materia getMateria(String materia) {
+	public Materia getMateriaPorNombre(String materia) {
 		return this.materiaService.getOne(materia);
 	}
 	
-	public List<Materia> getAllMateria(long id) {
+	//
+	public Materia materiaPorId(long id) {
 		return this.materiaService.findAll(id);
 	}
 
@@ -113,5 +114,24 @@ public class MateriaController {
 		
 		return this.mapper.writeValueAsString(materiaDocente);
 	}
+
+
+	public List<Docente> BuscarMateriasDeDocente(long id) {
+		
+		List<DocenteHasMaterias> docenteHas = new ArrayList<DocenteHasMaterias>();
+		docenteHas=this.docenteController.encontrarDocentesDeMateria(id);
+		List<Docente> docentes= new ArrayList<Docente>();
+		for(DocenteHasMaterias docentehas: docenteHas) {
+		
+			Docente docente=this.docenteController.buscarPorId(docentehas.getPrimeraClave());
+	
+			docentes.add(docente);
+		}
+		
+		return docentes;
+		
+	}
+
+
 	
 }

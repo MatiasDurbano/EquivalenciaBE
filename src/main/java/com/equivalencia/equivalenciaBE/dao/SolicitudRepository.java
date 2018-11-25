@@ -32,5 +32,8 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 	@Query(value = "select * from solicitudes where solicitudes.id = :id", nativeQuery = true)
 	Solicitud getOne(@Param("id")long id);
 
+	@Query(value = "select * from solicitudes where solicitudes.id = :id and solicitudes.estado= 'en_espera'", nativeQuery = true)
+	Solicitud getEnEspera(@Param("id")long segundaClave);
+
 	
 }

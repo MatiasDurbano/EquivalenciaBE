@@ -18,4 +18,11 @@ public interface DocenteHasMateriasRepository extends JpaRepository<DocenteHasMa
 	@Query(value = "select * from docente_has_materias where docente_has_materias.iddocente = :id", nativeQuery = true)
 	List<DocenteHasMaterias> MateriasDeDocente(@Param("id")long docente);
 
+	@Query(value = "select * from docente_has_materias where docente_has_materias.idmaterias = :id", nativeQuery = true)
+	List<DocenteHasMaterias> DocenteDeMateria(@Param("id")long materia);
+
+	@Query(value = "delete from docente_has_materias where docente_has_materias.iddocente = :id", nativeQuery = true)
+	void borrarMateriasDocente(long id);
+
+
 }

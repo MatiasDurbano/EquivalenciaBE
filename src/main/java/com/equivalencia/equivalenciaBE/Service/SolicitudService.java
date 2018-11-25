@@ -21,6 +21,8 @@ public interface SolicitudService {
 	List<SolicitudOfrecimiento> findMateriaOfrecimiento(long id);
 
 	Solicitud getOne(long segundaClave);
+
+	Solicitud getSolicitudEnEspera(long segundaClave);
 	
 	
 }

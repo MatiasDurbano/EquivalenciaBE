@@ -10,7 +10,8 @@ public interface MateriaService {
 	
 	List<Materia> findAll(String carrera);
 
-	List<Materia> findAll(long primeraClave);
+	//
+	Materia findAll(long primeraClave);
 
 	Materia save(Materia materia);
 	

@@ -17,4 +17,6 @@ public interface SolicitudHasMateriaUngsRepository extends JpaRepository<Solicit
 	@SuppressWarnings("unchecked")
 	SolicitudHasMateriasUngs save(SolicitudHasMateriasUngs solicitudHas);
 
+
+
 }

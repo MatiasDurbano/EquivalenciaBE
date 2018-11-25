@@ -19,4 +19,21 @@ public class DocenteHasMateriasImpl implements DocenteHasMateriasService {
 		return this.docenteHasMaterias.MateriasDeDocente(docente);
 	}
 
+	@Override
+	public List<DocenteHasMaterias> encontrarDocentesDeMateria(long materia) {
+		return this.docenteHasMaterias.DocenteDeMateria(materia);
+	}
+
+	@Override
+	public void borrarMateriasDocente(long id) {
+		this.docenteHasMaterias.borrarMateriasDocente(id);
+		
+	}
+	
+	@Override
+	public void save(DocenteHasMaterias docenteHas) {
+		this.docenteHasMaterias.save(docenteHas);
+		
+	}
+
 }

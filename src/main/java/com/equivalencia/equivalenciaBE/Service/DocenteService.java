@@ -10,9 +10,14 @@ public interface DocenteService {
 
 	List<Docente> findAll();
 
-	Docente findOne(Long id);
+	Docente buscarPorUsuario(Long id);
 
 	boolean existe(Docente docente);
 
+	Docente buscarPorId(Long id);
+	
 	Docente encontrarPorMail(String email);
+
+	List<Docente> buscarPorInstituto(long l);
+
 }

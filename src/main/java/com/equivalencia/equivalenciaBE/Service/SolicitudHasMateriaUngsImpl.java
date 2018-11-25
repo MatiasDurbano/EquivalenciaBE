@@ -28,4 +28,8 @@ public class SolicitudHasMateriaUngsImpl implements SolicitudHasMateriaUngsServi
 		
 	}
 
+
+
+	
+
 }
