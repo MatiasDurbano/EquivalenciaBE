@@ -14,9 +14,9 @@ public interface SolicitudService {
 
 	void SolicitudHasMateriasOfrecidas(long id, List<Long> idsOfrecimiento);
 
-	List<Solicitud> findAll(long id);
+	List<Solicitud> findAllPorFolio(long id);
 
-	String findMateria(long id);
+	String findMateriaUngs(long id);
 
 	List<SolicitudOfrecimiento> findMateriaOfrecimiento(long id);
 

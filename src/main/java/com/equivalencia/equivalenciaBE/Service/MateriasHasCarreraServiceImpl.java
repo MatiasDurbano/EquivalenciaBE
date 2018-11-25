@@ -21,7 +21,7 @@ public class MateriasHasCarreraServiceImpl implements MateriasHasCarreraService 
 	}
 	
 	@Override
-	public List<MateriasHasCarrera> findMateriHasCarrera(long id) {
+	public List<MateriasHasCarrera> findMateriHasCarreraPorIdCarrera(long id) {
 		return this.materiasHas.findMateriHasCarrera(id);
 	}
 

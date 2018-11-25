@@ -14,4 +14,6 @@ public interface CarreraService {
 
 	Carrera getOne(String carrera);
 
+	List<Carrera> buscarPorInstituto(long l);
+
 }

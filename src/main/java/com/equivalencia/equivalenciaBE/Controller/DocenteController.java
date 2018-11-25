@@ -82,7 +82,7 @@ public class DocenteController {
 	}
 	
 	@RequestMapping(value = "/actualizarDocente", method = RequestMethod.POST)
-	public String getSolicitudPorCodigo(@RequestBody String stringJson) throws JsonProcessingException {
+	public String actualizarDocente(@RequestBody String stringJson) throws JsonProcessingException {
 		try {
 			this.mapper= new ObjectMapper();		
 
@@ -90,7 +90,7 @@ public class DocenteController {
 			Docente docente= this.docenteService.encontrarPorMail(docentePost.getEmail());
 			this.docenteHasMaterias.borrarMateriasDocente(docente.getId());
 			
-			List<String> materias = docentePost.getMateriasDocente();
+			List<String> materias = docentePost.getasignaturas();
 			
 			for(String materia: materias) {
 				Materia mater = this.materiaController.getMateriaPorNombre(materia);
@@ -135,7 +135,7 @@ public class DocenteController {
 					nombreMaterias.add(mat.getNombre());
 				}
 				
-				docentePost.setMateriasDocente(nombreMaterias);
+				docentePost.setasignaturas(nombreMaterias);
 				docentesPost.add(docentePost);
 				
 			}

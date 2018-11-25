@@ -3,8 +3,10 @@ package com.equivalencia.equivalenciaBE.dao;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Comentario;
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.DocenteHasMaterias;
@@ -21,8 +23,13 @@ public interface DocenteHasMateriasRepository extends JpaRepository<DocenteHasMa
 	@Query(value = "select * from docente_has_materias where docente_has_materias.idmaterias = :id", nativeQuery = true)
 	List<DocenteHasMaterias> DocenteDeMateria(@Param("id")long materia);
 
+	@Modifying
+	@Transactional
 	@Query(value = "delete from docente_has_materias where docente_has_materias.iddocente = :id", nativeQuery = true)
 	void borrarMateriasDocente(long id);
 
+
+	@Query(value = "delete from docente_has_materias where docente_has_materias.iddocente = :id", nativeQuery = true)
+	void deleteById(long id);
 
 }

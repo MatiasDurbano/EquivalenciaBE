@@ -171,7 +171,7 @@ public class SolicitudController {
 				AlumnoSolicitud alumnoSolicitud=new AlumnoSolicitud();
 				SolicitudPost ret= new SolicitudPost();
 			
-				List<Solicitud> solicitudes = this.solicitudService.findAll(folio.getId());
+				List<Solicitud> solicitudes = this.solicitudService.findAllPorFolio(folio.getId());
 				List<SolicitudModel> solicitudesModel = new ArrayList<SolicitudModel>();
 			
 				alumnoSolicitud=guardarAlumnoSolicitud(solicitudes.get(0).getIdAlumno());
@@ -181,7 +181,7 @@ public class SolicitudController {
 			
 				for(Solicitud solicitud: solicitudes) {	
 					SolicitudModel solicitudModel= new SolicitudModel();
-					solicitudModel.setmateriaUngs(this.solicitudService.findMateria(solicitud.getId()));
+					solicitudModel.setmateriaUngs(this.solicitudService.findMateriaUngs(solicitud.getId()));
 					solicitudModel.setAsignaturaEquivalente(cargarAsignatura(this.solicitudService.findMateriaOfrecimiento(solicitud.getId())));
 					solicitudModel.setAlumno(alumnoSolicitud);
 					solicitudModel.setEstado(solicitud.getEstado());
@@ -218,7 +218,7 @@ public class SolicitudController {
 			List<SolicitudHasMateriasUngs> solicitudHas = this.materiaController.getSolicitudHasMateriaUngs(mat.getId());
 			
 			
-		for(SolicitudHasMateriasUngs solicitudHasMateria: solicitudHas) {
+		for(SolicitudHasMateriasUngs solicitudHasMateria: solicitudHas) {//segunda clave =idmateriaofrecida
 				Solicitud soli= this.solicitudService.getSolicitudEnEspera(solicitudHasMateria.getSegundaClave());
 				if(soli !=null) {
 				
@@ -241,7 +241,7 @@ public class SolicitudController {
 					for(SolicitudHasMateria materiaOfrecida :materiasOfrecidas) {
 					
 						AsignaturaEquivalente asignatura = new AsignaturaEquivalente();
-					
+						//id de las materias ofrecida
 						SolicitudOfrecimiento solicitudOfrecimiento= this.materiaController.findMateriaOfrecimiento(materiaOfrecida.getSegundaClave());
 					
 						asignatura.setAnioAprobacion(solicitudOfrecimiento.getAnioAprobacion());

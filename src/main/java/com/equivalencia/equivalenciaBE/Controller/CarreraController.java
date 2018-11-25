@@ -89,7 +89,7 @@ public class CarreraController {
 		List<CarreraMaterias> materiaCarrera= new ArrayList<CarreraMaterias>();
 	
 		for(Carrera carrera: Carreras) {
-			List<MateriasHasCarrera> materiaHas= this.findMateriasHasCarrera(carrera);
+			List<MateriasHasCarrera> materiaHas= this.findMateriasHasCarreraPorCarrera(carrera);
 			
 			CarreraMaterias carreraMateria = new CarreraMaterias();
 			carreraMateria.setCarrera(carrera.getNombre());
@@ -149,8 +149,8 @@ public class CarreraController {
 	
 	
 	
-	private List<MateriasHasCarrera> findMateriasHasCarrera(Carrera carrera){
-		List<MateriasHasCarrera> carreraMateria = this.materiaHas.findMateriHasCarrera(carrera.getId());
+	private List<MateriasHasCarrera> findMateriasHasCarreraPorCarrera(Carrera carrera){
+		List<MateriasHasCarrera> carreraMateria = this.materiaHas.findMateriHasCarreraPorIdCarrera(carrera.getId());
 		return 	carreraMateria;
 
 	}
@@ -192,5 +192,11 @@ public class CarreraController {
 		materiaModel.setNombre(materia.getNombre());
 		materiaModel.setHoras(materia.getHoras());
 		return materiaModel;
+	}
+
+
+
+	public List<Carrera> buscarPorInstituto(long l) {
+		return this.carreraService.buscarPorInstituto(l);
 	}
 }

@@ -46,12 +46,12 @@ public class SolicitudServiceImpl implements SolicitudService {
 	}
 
 	@Override
-	public List<Solicitud> findAll(long id) {
+	public List<Solicitud> findAllPorFolio(long id) {
 		return this.solicitudRepository.findAll(id);
 	}
 
 	@Override
-	public String findMateria(long id) {
+	public String findMateriaUngs(long id) {
 		return this.solicitudRepository.findMateria(id);
 	}
 

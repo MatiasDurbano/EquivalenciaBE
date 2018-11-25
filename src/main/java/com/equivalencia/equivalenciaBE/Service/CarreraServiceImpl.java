@@ -34,5 +34,10 @@ public class CarreraServiceImpl implements CarreraService {
 		return this.carreraRepository.getOne(carrera);
 	}
 
+	@Override
+	public List<Carrera> buscarPorInstituto(long l) {
+		return this.carreraRepository.buscarPorInstituto(l);
+	}
+
 	
 }

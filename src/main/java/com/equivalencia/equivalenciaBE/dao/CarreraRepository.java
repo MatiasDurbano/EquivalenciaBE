@@ -22,6 +22,9 @@ public interface CarreraRepository extends JpaRepository<Carrera,Long> {
 	@Query(value = "Select * FROM carrera where carrera.nombre = :nombre ", nativeQuery = true)
 	Carrera getOne(@Param("nombre")String carrera);
 
+	@Query(value = "Select * FROM carrera where carrera.idinstituto = :id ", nativeQuery = true)
+	List<Carrera> buscarPorInstituto(@Param("id")long l);
+
 	 
 
 }

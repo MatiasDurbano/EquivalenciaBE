@@ -8,6 +8,6 @@ import com.equivalencia.equivalenciaBE.dao.MateriasHasCarreraRepository;
 public interface MateriasHasCarreraService {
 	MateriasHasCarrera save(MateriasHasCarrera materiasHas);
 	
-	public List<MateriasHasCarrera> findMateriHasCarrera(long id);
+	public List<MateriasHasCarrera> findMateriHasCarreraPorIdCarrera(long id);
 
 }

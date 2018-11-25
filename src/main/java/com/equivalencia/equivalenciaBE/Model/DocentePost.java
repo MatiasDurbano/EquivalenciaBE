@@ -16,8 +16,8 @@ public class DocentePost {
 	@JsonProperty( "email" )
 	private String email;
 	
-	@JsonProperty( "materias" )
-	private List<String> materiasDocente;
+	@JsonProperty( "asignaturas" )
+	private List<String> asignaturas;
 
 	public String getEmail() {
 		return email;
@@ -27,12 +27,12 @@ public class DocentePost {
 		this.email = email;
 	}
 
-	public List<String> getMateriasDocente() {
-		return materiasDocente;
+	public List<String> getasignaturas() {
+		return asignaturas;
 	}
 
-	public void setMateriasDocente(List<String> materiasDocente) {
-		this.materiasDocente = materiasDocente;
+	public void setasignaturas(List<String> asignaturas) {
+		this.asignaturas = asignaturas;
 	}
 
 	public String getNombre() {
