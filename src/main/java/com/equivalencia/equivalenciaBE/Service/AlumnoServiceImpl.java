@@ -26,12 +26,22 @@ public class AlumnoServiceImpl implements AlumnoService {
 
 	@Override
 	public boolean existe(Alumno alumno) {
-		List<Alumno> lista=this.alumnoRepository.findAll(alumno.getLegajo());
+		List<Alumno> lista=this.alumnoRepository.findAll(alumno.getLegajo(),alumno.getEmail());
 		if(lista.size()>=1) {
 			return true;
 		}
 		return false;
 		
+	}
+
+	@Override
+	public Alumno buscarPorEmail(String email) {
+		return this.alumnoRepository.buscarPorEmail(email);
+	}
+
+	@Override
+	public List<Alumno> traerPorInstituto(long id) {
+		return this.alumnoRepository.traerPorInstituto(id);
 	}
 	
 	

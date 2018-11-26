@@ -27,6 +27,7 @@ import com.equivalencia.equivalenciaBE.Model.TablasDb.Certificado;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Comentario;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Folio;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Instituto;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Materia;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.PlanMateriaOfrecida;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Solicitud;
@@ -51,6 +52,9 @@ public class SolicitudController {
 
 	@Autowired
 	protected AlumnoController alumnoController;
+	
+	@Autowired
+	protected InstitutoController institutoController;
 	
 	@Autowired
 	protected SolicitudService solicitudService;
@@ -84,7 +88,7 @@ public class SolicitudController {
 			this.mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 			
 	        SolicitudPost solicitud=mapper.readValue(solicitudJson, SolicitudPost.class);
-	        Alumno alumno = solicitud.getAlumno();
+	        Alumno alumno = this.getAlumno(solicitud.getAlumno());
 	        Carrera carrera= this.carreraController.getCarreraPorNombre(solicitud.getCarrera());
 	        
 	        if(!this.alumnoController.existe(alumno)) {
@@ -93,7 +97,7 @@ public class SolicitudController {
 	        	folio=this.folioController.guardarFolio(folio);
 	        
 	        	//guardo certificados
-	        	Certificado certificado= solicitud.getCertificado();
+	        	Certificado certificado= this.getCertificado(solicitud.getAlumno());
 	        	certificado = this.certificadoController.save(certificado);
 	        
 	        	alumno.setIdCertificados(certificado.getId());
@@ -144,18 +148,15 @@ public class SolicitudController {
 		        	//busco los docente que dictan esa materia
 	        		this.enviarMailADocentes(this.materiaController.BuscarMateriasDeDocente(materia.getId()));
 	        		
-		        	
-		        	
-	        		
 	        	}
 	        	
 	        	this.enviarMailAAlumno(alumno.getEmail(), folio.getCodigo());
-	        	return this.mapper.writeValueAsString(folio.getCodigo());
+	        	return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),folio.getCodigo()));
 	        }
 	        
 	       else {
 	    	   //respues a que ya existe folio
-	    	   return this.mapper.writeValueAsString(0);
+	    	   return this.mapper.writeValueAsString(new RestResponse(HttpStatus.CONFLICT.value(),"Email y/o legajo ya registrado"));
 	        }
 	}
 	
@@ -176,7 +177,7 @@ public class SolicitudController {
 			
 				alumnoSolicitud=guardarAlumnoSolicitud(solicitudes.get(0).getIdAlumno());
 			
-				ret.setAlumno(alumnoSolicitud);
+				ret.setAlumnoSolicitud(alumnoSolicitud);
 			
 			
 				for(Solicitud solicitud: solicitudes) {	
@@ -185,7 +186,7 @@ public class SolicitudController {
 					solicitudModel.setAsignaturaEquivalente(cargarAsignatura(this.solicitudService.findMateriaOfrecimiento(solicitud.getId())));
 					solicitudModel.setAlumno(alumnoSolicitud);
 					solicitudModel.setEstado(solicitud.getEstado());
-					solicitudModel.setComentario(this.comentarioController.findComentario(solicitud.getId()));
+					solicitudModel.setComentario(this.comentarioController.findComentario(solicitud.getId()).getComentario());
 					solicitudesModel.add(solicitudModel);
 		
 				}
@@ -216,7 +217,6 @@ public class SolicitudController {
 		for(String nombreMateria: materia.getMaterias()) {
 			Materia mat = this.materiaController.getMateriaPorNombre(nombreMateria);
 			List<SolicitudHasMateriasUngs> solicitudHas = this.materiaController.getSolicitudHasMateriaUngs(mat.getId());
-			
 			
 		for(SolicitudHasMateriasUngs solicitudHasMateria: solicitudHas) {//segunda clave =idmateriaofrecida
 				Solicitud soli= this.solicitudService.getSolicitudEnEspera(solicitudHasMateria.getSegundaClave());
@@ -269,6 +269,119 @@ public class SolicitudController {
 		
 	}
 	
+	@RequestMapping(value = "/actualizarSolcitud", method = RequestMethod.POST)
+	public String actualizarSolicitud(@RequestBody String stringJson) throws IOException {
+		
+			this.mapper= new ObjectMapper();		
+			
+			this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			this.mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+			
+	        SolicitudPost solicitud=mapper.readValue(stringJson, SolicitudPost.class);
+	        Alumno alumno = this.getAlumno(solicitud.getAlumno());
+	        Carrera carrera= this.carreraController.getCarreraPorNombre(solicitud.getCarrera());
+	        
+	        //buscar alumno
+	        Alumno alumn= this.alumnoController.buscarPorEmail(alumno.getEmail());
+	        
+	        List<SolicitudModel> solicitudes = solicitud.getSolicitudesModel();
+	        
+	        for(SolicitudModel solicitudModel: solicitudes) {
+	        		        			        		
+	        	Solicitud soli = this.solicitudService.buscarSolicitudPorAlumnoyMateriaUngs(alumn.getId(),solicitudModel.getmateriaUngs());
+	        		  
+		        Comentario comentario = this.comentarioController.findComentario(soli.getComentario());
+	        	comentario.setComentario(solicitudModel.getComentario());
+		        
+	        	
+	        	this.comentarioController.actualizarComentario(comentario);
+	        	
+	        	
+	        	switch(solicitudModel.getEstado()) {
+	        	   	case "aprobado" :
+	        	   		soli.setEstado(EstadoSolicitud.Aprobado);
+	        	   		break; // optional
+	        	   
+	        	   case "desaprobado" :
+	        		   soli.setEstado(EstadoSolicitud.Desaprobado);
+	        	      break; // optional
+	        	   
+	        	   case "coloquio" :
+	        		   soli.setEstado(EstadoSolicitud.Coloquio);
+	        	      break; // optional
+	        	   	        	      
+	        	}
+	        	
+	        	
+		        this.solicitudService.actualizarSolicitud(soli);
+		       
+	        	}
+	        	
+	        	return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"actualizado"));
+			
+	}
+	
+	
+///ASCOOOOOOOOOOOOOO
+	
+	@RequestMapping(value = "/solicitudesAdmin", method = RequestMethod.POST)
+	public String obtenerSoliciutesAdmin(@RequestBody String solicitudJson) throws IOException {
+
+		this.mapper= new ObjectMapper();
+		String inst=solicitudJson;
+		
+		Instituto instituto= this.institutoController.obtenerInstitutoPorNombre(inst);
+		List<Alumno> alumnos= this.alumnoController.traerPorInstituto(instituto.getId());
+		List<SolicitudPost> ret = new ArrayList<SolicitudPost>();
+
+		for(Alumno alumno: alumnos) {
+			AlumnoSolicitud alumnoSoli= this.getAlumnoSoli(alumno);
+			List<SolicitudModel> SolicitudesModel=new ArrayList<SolicitudModel>();
+			List<Solicitud> solicitudes = this.solicitudService.buscarSolicitudPorAlumno(alumno.getId());
+				
+			for(Solicitud solicitud : solicitudes) {
+				
+				SolicitudModel solicitudModel= new SolicitudModel();
+				
+				List<SolicitudHasMateria> materiasOfrecidas= new ArrayList<SolicitudHasMateria>();
+				materiasOfrecidas=this.materiaController.getSolicitudHasMateria(solicitud.getId());
+				
+				solicitudModel.setmateriaUngs(this.materiaController.buscarPorSolicitud(solicitud.getId()).getNombre());
+	
+				List<AsignaturaEquivalente> ofrecimientos= new ArrayList<AsignaturaEquivalente>();
+				
+				//busco las materiasofrecidas
+				for(SolicitudHasMateria materiaOfrecida :materiasOfrecidas) {
+					
+					AsignaturaEquivalente asignatura = new AsignaturaEquivalente();
+						//id de las materias ofrecida
+					SolicitudOfrecimiento solicitudOfrecimiento= this.materiaController.findMateriaOfrecimiento(materiaOfrecida.getSegundaClave());
+					
+						asignatura.setAnioAprobacion(solicitudOfrecimiento.getAnioAprobacion());	
+						asignatura.setCargaHoraria(solicitudOfrecimiento.getCargaHoraria());
+						asignatura.setNombre(solicitudOfrecimiento.getNombre());
+						asignatura.setUniversidad(solicitudOfrecimiento.getUniversidad());
+						asignatura.setDocumentacion(this.planController.getOneOfrecida(solicitudOfrecimiento.getIdPlan()));
+					
+						ofrecimientos.add(asignatura);
+					}
+									
+				solicitudModel.setAsignaturaEquivalente(ofrecimientos);
+				solicitudModel.setEstado(solicitud.getEstado());
+
+				SolicitudesModel.add(solicitudModel);
+			}
+			SolicitudPost solicitudPost= new SolicitudPost();
+			solicitudPost.setAlumnoSolicitud(alumnoSoli);
+			solicitudPost.setsolicitudesModel(SolicitudesModel);
+			
+			ret.add(solicitudPost);
+		}
+		
+		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),ret));
+
+	}
+	
 	public AlumnoSolicitud guardarAlumnoSolicitud(long id) {
 		Alumno alumno = this.alumnoController.getOne(id);
 		AlumnoSolicitud alumnoSolicitud=new AlumnoSolicitud();
@@ -284,7 +397,7 @@ public class SolicitudController {
 		
 		alumnoSolicitud.setCarrera(carrera.getNombre());
 		Certificado certificado=this.certificadoController.getOne(alumno.getIdCertificados());
-		alumnoSolicitud.setConstancia(certificado.getConstancia());
+		alumnoSolicitud.setDocumentacion(certificado.getConstancia());
 		alumnoSolicitud.setAnalitico(certificado.getAnalitico());
 		
 		
@@ -308,6 +421,26 @@ public class SolicitudController {
 		model.setCertificado(certificado);
 		
 		return model;
+	}
+	
+
+
+
+	public AlumnoSolicitud getAlumnoSoli(Alumno alumno) {
+		AlumnoSolicitud alumnoSolicitud=new AlumnoSolicitud();
+		alumnoSolicitud.setApellido(alumno.getApellido());
+		alumnoSolicitud.setDni(alumno.getDni());
+		alumnoSolicitud.setEmail(alumno.getEmail());
+		alumnoSolicitud.setLegajo(alumno.getLegajo());
+		alumnoSolicitud.setNombre(alumno.getNombre());
+		alumnoSolicitud.setTelefono(alumno.getNombre());
+		Certificado certificado=this.certificadoController.getOne(alumno.getIdCertificados());
+		
+		
+		alumnoSolicitud.setAnalitico(certificado.getAnalitico());
+		alumnoSolicitud.setDocumentacion(certificado.getConstancia());
+		
+		return alumnoSolicitud;
 	}
 	
 	
@@ -340,4 +473,28 @@ public class SolicitudController {
 		this.enviadorMail=new EnviadorMail();
 		this.enviadorMail.enviarAAlumno(email, codigo);
 	}
+	
+	public Alumno getAlumno(AlumnoSolicitud alumnoSolicitud) {
+		Alumno alumno=new Alumno();
+		alumno.setApellido(alumnoSolicitud.getApellido());
+		alumno.setDni(alumnoSolicitud.getDni());
+		alumno.setEmail(alumnoSolicitud.getEmail());
+		alumno.setLegajo(alumnoSolicitud.getLegajo());
+		alumno.setNombre(alumnoSolicitud.getNombre());
+		alumno.setTelefono(alumnoSolicitud.getNombre());
+		alumno.setIdCarrera(0);
+		alumno.setIdCertificados(0);
+		
+		return alumno;
+	}
+	
+	
+	public Certificado getCertificado(AlumnoSolicitud alumno) {
+		Certificado ret = new Certificado();
+		
+		ret.setConstancia(alumno.getDocumentacion());
+		ret.setAnalitico(alumno.getAnalitico());
+		return ret;
+		}
+	
 }

@@ -29,6 +29,12 @@ public class SolicitudHasMateriaUngsImpl implements SolicitudHasMateriaUngsServi
 	}
 
 
+	@Override
+	public List<SolicitudHasMateriasUngs> obtenerPorSolicitud(long id) {
+		return this.solicitudHasMateriaRepository.obtenerPorSolicitud(id);
+	}
+
+
 
 	
 

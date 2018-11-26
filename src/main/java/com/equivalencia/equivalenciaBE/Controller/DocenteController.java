@@ -112,8 +112,9 @@ public class DocenteController {
 	public String getTraerDocente(@RequestBody String stringJson) throws JsonProcessingException {
 		try {
 			this.mapper= new ObjectMapper();
-			
-			Instituto instituto= this.mapper.readValue(stringJson, Instituto.class);
+			System.out.println(stringJson);
+			Instituto instituto= new Instituto();
+			instituto.setNombre(stringJson);
 			
 			Instituto inst= this.institutoController.obtenerInstitutoPorNombre(instituto.getNombre());
 			

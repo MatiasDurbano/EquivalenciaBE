@@ -1,7 +1,5 @@
 package com.equivalencia.equivalenciaBE.Model;
 
-import com.equivalencia.equivalenciaBE.Model.TablasDb.Alumno;
-import com.equivalencia.equivalenciaBE.Model.TablasDb.Certificado;
 
 public class AlumnoSolicitud {
 	
@@ -21,7 +19,7 @@ public class AlumnoSolicitud {
 	
 	private String analitico;
 	
-	private String constancia;
+	private String documentacion;
 
 	
 	public String getNombre() {
@@ -80,12 +78,12 @@ public class AlumnoSolicitud {
 		this.analitico = analitico;
 	}
 
-	public String getConstancia() {
-		return constancia;
+	public String getDocumentacion() {
+		return documentacion;
 	}
 
-	public void setConstancia(String constancia) {
-		this.constancia = constancia;
+	public void setDocumentacion(String constancia) {
+		this.documentacion = constancia;
 	}
 	
 	public String getCarrera() {
@@ -96,28 +94,6 @@ public class AlumnoSolicitud {
 		this.carrera = carrera;
 	}
 
-	
-	public Alumno getAlumno() {
-		Alumno alumno=new Alumno();
-		alumno.setApellido(apellido);
-		alumno.setDni(dni);
-		alumno.setEmail(email);
-		alumno.setLegajo(legajo);
-		alumno.setNombre(nombre);
-		alumno.setTelefono(telefono);
-		alumno.setIdCarrera(0);
-		alumno.setIdCertificados(0);
-		
-		return alumno;
-	}
-	
-	
-	public Certificado getCertificado() {
-		Certificado ret = new Certificado();
-		ret.setConstancia(this.constancia);
-		ret.setAnalitico(this.analitico);
-		return ret;
-		}
 	
 
 }

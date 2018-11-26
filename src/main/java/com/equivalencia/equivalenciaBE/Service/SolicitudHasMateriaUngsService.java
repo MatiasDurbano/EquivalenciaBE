@@ -11,4 +11,6 @@ public interface SolicitudHasMateriaUngsService {
 
 	void save(SolicitudHasMateriasUngs solicitudHas);
 
+	List<SolicitudHasMateriasUngs> obtenerPorSolicitud(long id);
+
 }

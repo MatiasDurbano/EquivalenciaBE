@@ -22,5 +22,11 @@ public class ComentarioServiceImpl implements ComentarioService {
 		return this.comentarioRepository.findComentario(id);
 	}
 
+	@Override
+	public void actualizarComentario(Comentario comentario) {
+		this.comentarioRepository.actualizarComentario(comentario.getId(),comentario.getComentario());// TODO Auto-generated method stub
+		
+	}
+
 	
 }

@@ -133,5 +133,21 @@ public class MateriaController {
 	}
 
 
+	public List<Materia> buscarMateriasPorInstituto(long id) {
+		return this.materiaService.buscarMateriaPorInstituto(id);
+	}
+
+
+	public List<SolicitudHasMateriasUngs> getSolicitudHasMateriaUngsPorSolicitud(long id) {
+		return this.solicitudHasMateriaUngs.obtenerPorSolicitud(id);
+	}
+
+
+	public Materia buscarPorSolicitud(long id) {
+		return this.materiaService.buscarPorSolicitud(id);
+	}
+
+
+
 	
 }

@@ -55,4 +55,16 @@ public class MateriaServiceImpl implements MateriaService {
 	}
 
 
+	@Override
+	public List<Materia> buscarMateriaPorInstituto(long id) {
+		return this.materiaRepository.buscarMateriaPorInstituto(id);
+	}
+
+
+	@Override
+	public Materia buscarPorSolicitud(long id) {
+		return this.materiaRepository.buscarPorSolicitud(id);
+	}
+	
+
 }

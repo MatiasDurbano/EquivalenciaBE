@@ -56,8 +56,8 @@ public class InstitutoController {
 	public String getMateriasPorInstituto(@RequestBody String usuarioJson) throws IOException {
 		this.mapper= new ObjectMapper();
 		
-		Instituto inst= this.mapper.readValue(usuarioJson,Instituto.class);
-		Instituto instituto= this.obtenerInstitutoPorNombre(inst.getNombre());
+		//Instituto inst= this.mapper.readValue(usuarioJson,Instituto.class);
+		Instituto instituto= this.obtenerInstitutoPorNombre(usuarioJson);
 		
 		MateriaPost ret = new MateriaPost();
 		List<String> materasPost=new ArrayList<String>();

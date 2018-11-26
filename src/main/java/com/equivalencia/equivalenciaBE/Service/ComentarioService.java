@@ -7,4 +7,6 @@ public interface ComentarioService {
 	Comentario save(Comentario comentario);
 
 	Comentario findComentario(long id);
+
+	void actualizarComentario(Comentario comentario);
 }

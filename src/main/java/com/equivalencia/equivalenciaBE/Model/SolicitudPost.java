@@ -19,16 +19,12 @@ public class SolicitudPost {
 	@JsonDeserialize(as=ArrayList.class, contentAs=SolicitudModel.class)
 	private List<SolicitudModel> solicitudesModel;
 
-	 
-	public Alumno getAlumno() {
-		return alumno.getAlumno();
-	}
 	
 	public AlumnoSolicitud AlumnoSolicitud() {
 		return alumno;
 	}
 
-	public void setAlumno(AlumnoSolicitud alumno) {
+	public void setAlumnoSolicitud(AlumnoSolicitud alumno) {
 		this.alumno = alumno;
 	}
 
@@ -40,13 +36,16 @@ public class SolicitudPost {
 		this.solicitudesModel = solicitudesModel;
 	}
 	
-	public Certificado getCertificado() {
-		return alumno.getCertificado();
-	}
 	
 	public String getCarrera() {
 		return this.alumno.getCarrera();
 	}
 
-	
+	public AlumnoSolicitud getAlumno() {
+		return alumno;
+	}
+
+	public void setAlumno(AlumnoSolicitud alumno) {
+		this.alumno = alumno;
+	}
 }

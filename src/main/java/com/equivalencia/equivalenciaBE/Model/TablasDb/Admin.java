@@ -19,11 +19,17 @@ public class Admin extends ParentEntity{
 	@Column(name = "apellido", nullable = false, length = 45)
 	private String apelido;
 	
+	@Column(name = "mail", nullable = false, length = 45)
+	private String email;
+	
 	@Column(name = "tipo")
 	private int tipo;
 	
 	@Column(name = "idusuario")
-	private int usuarioId;
+	private long idUsuario;
+	
+	@Column(name = "idinstituto")
+	private long idInstituto;
 
 	public String getNombre() {
 		return nombre;
@@ -49,13 +55,30 @@ public class Admin extends ParentEntity{
 		this.tipo = tipo;
 	}
 
-	public int getUsuarioId() {
-		return usuarioId;
+	public long getIdUsuario() {
+		return idUsuario;
 	}
 
-	public void setUsuarioId(int usuarioId) {
-		this.usuarioId = usuarioId;
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
 	}
+
+	public long getIdInstituto() {
+		return idInstituto;
+	}
+
+	public void setIdInstituto(int idInstituto) {
+		this.idInstituto = idInstituto;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	
 	
 }

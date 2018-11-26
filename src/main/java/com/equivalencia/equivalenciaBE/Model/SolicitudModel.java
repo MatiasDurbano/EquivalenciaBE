@@ -19,10 +19,12 @@ public class SolicitudModel {
 	
 	private AlumnoSolicitud alumno;
 	
+
+	@JsonProperty( "estado" )
 	private String estado;
 	
 	@JsonProperty( "comentario" )
-	private Comentario comentario;
+	private String comentario;
 	
 	public String getmateriaUngs() {
 		return materiaUngs;
@@ -40,11 +42,11 @@ public class SolicitudModel {
 		this.solicitudOfrecimiento = solicitudOfrecimiento;
 	}
 
-	public Comentario getComentario() {
+	public String getComentario() {
 		return comentario;
 	}
 
-	public void setComentario(Comentario comentario) {
+	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
 

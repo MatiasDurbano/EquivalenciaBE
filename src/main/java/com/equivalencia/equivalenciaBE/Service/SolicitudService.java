@@ -23,6 +23,12 @@ public interface SolicitudService {
 	Solicitud getOne(long segundaClave);
 
 	Solicitud getSolicitudEnEspera(long segundaClave);
+
+	Solicitud buscarSolicitudPorAlumnoyMateriaUngs(long id, String getmateriaUngs);
+
+	void actualizarSolicitud(Solicitud soli);
+
+	List<Solicitud> buscarSolicitudPorAlumno(long id);
 	
 	
 }

@@ -17,6 +17,9 @@ public interface SolicitudHasMateriaUngsRepository extends JpaRepository<Solicit
 	@SuppressWarnings("unchecked")
 	SolicitudHasMateriasUngs save(SolicitudHasMateriasUngs solicitudHas);
 
+	@Query(value = "Select * FROM materias_has_solicitudes m where m.idsolicitud=:id", nativeQuery = true)
+	List<SolicitudHasMateriasUngs> obtenerPorSolicitud(@Param("id")long id);
+
 
 
 }

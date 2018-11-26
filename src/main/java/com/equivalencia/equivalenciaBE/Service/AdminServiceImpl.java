@@ -29,6 +29,11 @@ public class AdminServiceImpl implements AdminService {
 	public Admin findOne(Long id) {
 		return this.adminRepository.getOne(id);
 	}
+
+	@Override
+	public Admin buscarPorEmail(String email) {
+		return this.adminRepository.buscarPorEmail(email);
+	}
 	
 
 }

@@ -85,6 +85,7 @@ public class UsuarioController {
 						ret.setNombre(administrador.getNombre());
 						ret.setApellido(administrador.getApellido());
 						ret.setInstituto(administrador.getInstituto());
+						ret.setEmail(admin.getEmail());
 						
 						break;
 			}

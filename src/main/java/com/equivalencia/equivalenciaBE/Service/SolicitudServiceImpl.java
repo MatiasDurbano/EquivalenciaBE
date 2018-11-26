@@ -76,6 +76,21 @@ public class SolicitudServiceImpl implements SolicitudService {
 		return this.solicitudRepository.getEnEspera(segundaClave);
 	}
 
+	@Override
+	public Solicitud buscarSolicitudPorAlumnoyMateriaUngs(long id, String getmateriaUngs) {
+		return this.solicitudRepository.buscarPorAlumnoYmateriaUngs(id,getmateriaUngs);
+	}
+
+	@Override
+	public void actualizarSolicitud(Solicitud soli) {
+		this.solicitudRepository.actualizarEstado(soli.getId(),soli.getEstado());
+	}
+
+	@Override
+	public List<Solicitud> buscarSolicitudPorAlumno(long id) {
+		return this.solicitudRepository.buscarPorAlumno(id);
+	}
+
 
 	
 	

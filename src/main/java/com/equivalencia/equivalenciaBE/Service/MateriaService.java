@@ -21,6 +21,10 @@ public interface MateriaService {
 
 	Materia findOne(long segundaClave);
 
+	List<Materia> buscarMateriaPorInstituto(long id);
+
+	Materia buscarPorSolicitud(long id);
+
 
 
 }

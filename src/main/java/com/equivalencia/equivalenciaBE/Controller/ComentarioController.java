@@ -20,4 +20,9 @@ public class ComentarioController {
 	public Comentario findComentario(long id) {
 		return this.comentarioService.findComentario(id);
 	}
+
+	public void actualizarComentario(Comentario comentario) {
+		this.comentarioService.actualizarComentario(comentario);
+		
+	}
 }

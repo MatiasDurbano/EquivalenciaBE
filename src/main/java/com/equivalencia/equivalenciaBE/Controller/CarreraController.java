@@ -81,9 +81,10 @@ public class CarreraController {
 	public String enviarCarrerasMaterias(@RequestBody String solicitudJson) throws IOException {
 		this.mapper= new ObjectMapper();
 		
-		Instituto instituto= this.mapper.readValue(solicitudJson, Instituto.class);
+		//Instituto instituto= this.mapper.readValue(solicitudJson, Instituto.class);
+		String instituto=solicitudJson;
 		
-		List<Carrera> Carreras= this.carreraService.findAllporInstituto(instituto.getNombre());
+		List<Carrera> Carreras= this.carreraService.findAllporInstituto(instituto);
 		
 		//el return
 		List<CarreraMaterias> materiaCarrera= new ArrayList<CarreraMaterias>();
@@ -145,7 +146,6 @@ public class CarreraController {
 		return new RestResponse(HttpStatus.OK.value(),"ok");
 		
 	}
-	
 	
 	
 	
