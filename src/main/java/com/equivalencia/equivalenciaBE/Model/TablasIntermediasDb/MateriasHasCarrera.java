@@ -18,8 +18,8 @@ public class MateriasHasCarrera  implements Serializable {
 	 public MateriasHasCarrera () {
 	 }
 	 
-	 public MateriasHasCarrera (long id1, long id2) {
-		 id= new Keys(id1,id2);
+	 public MateriasHasCarrera (long id1, long id2,long disponible) {
+		 id= new Keys(id1,id2,disponible);
 	 }
 	
 	 public long getPrimeraClave() {
@@ -39,11 +39,16 @@ public class MateriasHasCarrera  implements Serializable {
 	 	@Column(name = "idcarrera")
 	 	private long second;
 
+	 	@Column(name = "disponible")
+	 	private long disponible;
+
+	 		 	
 	 	
 	 	public Keys() {}
-	 	public Keys(long id1, long id2) {
+	 	public Keys(long id1, long id2, long disponible) {
 	 		this.primary = id1;
 	 		this.second = id2;
+	 		this.disponible=disponible;
 	 		
 	 	}
 	 	
@@ -55,6 +60,10 @@ public class MateriasHasCarrera  implements Serializable {
 	 	public long getSecond() {
 	 		return second;
 	 	}
+		public long getDisponible() {
+			return disponible;
+		}
+		
 
 	 	
 	 }

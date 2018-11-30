@@ -1,5 +1,6 @@
 package com.equivalencia.equivalenciaBE.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class CarreraServiceImpl implements CarreraService {
 	@Override
 	public List<Carrera> buscarPorInstituto(long l) {
 		return this.carreraRepository.buscarPorInstituto(l);
+		
+		
 	}
 
 	

@@ -33,7 +33,7 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 	@Query(value = "select * from solicitudes where solicitudes.id = :id", nativeQuery = true)
 	Solicitud getOne(@Param("id")long id);
 
-	@Query(value = "select * from solicitudes where solicitudes.id = :id and solicitudes.estado= 'en_espera'", nativeQuery = true)
+	@Query(value = "select * from solicitudes where solicitudes.id = :id and solicitudes.estado= 'en_espera' and solicitudes.disponible = 1", nativeQuery = true)
 	Solicitud getEnEspera(@Param("id")long segundaClave);
 
 	
@@ -46,8 +46,13 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 	void actualizarEstado(@Param("id")long id,@Param("estado")String estado);
 
 	
-	@Query(value = "select * from solicitudes s where s.idalumno=:id and estado='en_espera'", nativeQuery = true)
+	@Query(value = "select * from solicitudes s where s.idalumno=:id", nativeQuery = true)
 	List<Solicitud> buscarPorAlumno(@Param("id")long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update solicitudes s set s.disponible=:disponible where s.id = :id", nativeQuery = true)	
+	void actualizarDisponibilidad(@Param("id")long id,@Param("disponible")long disponible);
 
 	
 }

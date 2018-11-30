@@ -25,4 +25,9 @@ public class MateriasHasCarreraServiceImpl implements MateriasHasCarreraService 
 		return this.materiasHas.findMateriHasCarrera(id);
 	}
 
+	@Override
+	public void actualizarMateriaDisponible(long id, long id2, long disponible) {
+		this.materiasHas.actualizarMateriaDisponible(id,id2,disponible);
+	}
+
 }

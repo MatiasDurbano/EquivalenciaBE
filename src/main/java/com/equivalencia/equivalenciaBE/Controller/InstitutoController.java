@@ -61,6 +61,7 @@ public class InstitutoController {
 		
 		MateriaPost ret = new MateriaPost();
 		List<String> materasPost=new ArrayList<String>();
+		if(this.carreraController.buscarPorInstituto(instituto.getId())!=null) {
 		List<Carrera> carreras = this.carreraController.buscarPorInstituto(instituto.getId());
 		
 		for(Carrera carrera: carreras) {
@@ -72,8 +73,9 @@ public class InstitutoController {
 					}
 			
 				}
-		ret.setMaterias(materasPost);
 		
+		ret.setMaterias(materasPost);
+		}
 		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),ret));
 	}
 	

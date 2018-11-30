@@ -11,16 +11,16 @@ public class CarrerasMateriasPost {
 	
 	
 	@JsonProperty( "instituto" )
-	private  Instituto instituto;
+	private  String instituto;
 	
 	@JsonProperty( "ListCarrera" )
 	@JsonDeserialize(as=ArrayList.class, contentAs=CarreraMaterias.class)
 	private List<CarreraMaterias> carreraMaterias;
 	
-	public Instituto getInstituto() {
+	public String getInstituto() {
 		return instituto;
 	}
-	public void setInstituto(Instituto instituto) {
+	public void setInstituto(String instituto) {
 		this.instituto = instituto;
 	}
 	public List<CarreraMaterias> getCarreraMaterias() {

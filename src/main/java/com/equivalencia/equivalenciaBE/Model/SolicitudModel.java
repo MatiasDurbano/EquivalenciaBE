@@ -26,6 +26,9 @@ public class SolicitudModel {
 	@JsonProperty( "comentario" )
 	private String comentario;
 	
+	@JsonProperty( "disponible" )
+	private long disponible;
+	
 	public String getmateriaUngs() {
 		return materiaUngs;
 	}
@@ -65,6 +68,14 @@ public class SolicitudModel {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public long getDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(long disponible) {
+		this.disponible = disponible;
 	}	
 
 }

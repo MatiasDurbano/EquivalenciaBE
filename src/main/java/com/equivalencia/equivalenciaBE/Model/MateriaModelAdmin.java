@@ -13,6 +13,9 @@ public class MateriaModelAdmin {
 	@JsonProperty( "plan" )
 	private String plan;
 
+	@JsonProperty( "disponible" )
+	private long disponible;
+	
 	public String getNombre() {
 		return nombreMateria;
 	}
@@ -35,6 +38,14 @@ public class MateriaModelAdmin {
 
 	public void setPlan(String plan) {
 		this.plan = plan;
+	}
+
+	public long getDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(long disponible) {
+		this.disponible = disponible;
 	}
 
 }

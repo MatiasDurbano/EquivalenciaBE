@@ -14,7 +14,9 @@ public class ComentarioController {
 	
 	
 	public Comentario crearComentario() {
-		return this.comentarioService.save(new Comentario());
+		Comentario comentario= new Comentario();
+		comentario.setComentario("");
+		return this.comentarioService.save(comentario);
 	}
 	
 	public Comentario findComentario(long id) {

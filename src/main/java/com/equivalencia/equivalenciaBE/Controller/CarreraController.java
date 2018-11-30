@@ -105,19 +105,19 @@ public class CarreraController {
 			materiaCarrera.add(carreraMateria);
 			
 		}
-		PostCarreraMateria post = new PostCarreraMateria();
-		post.setMateriaCarrera(materiaCarrera);
-		String ret=this.mapper.writeValueAsString(materiaCarrera);
-		return  ret;
+		
+		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),materiaCarrera));
+		
 		
 	}
 	
 	@RequestMapping(value = "/guardarMaterias", method = RequestMethod.POST)
 	public RestResponse guardarCarreraMaterias(@RequestBody String solicitudJson) throws IOException {
 		this.mapper= new ObjectMapper();
+		
 		CarrerasMateriasPost carreraMateria =  this.mapper.readValue(solicitudJson, CarrerasMateriasPost.class);
 		List<CarreraMaterias> carreraMaterias = carreraMateria.getCarreraMaterias();
-		Instituto instituto = this.insitutoService.getOne(carreraMateria.getInstituto().getNombre());
+		Instituto instituto = this.insitutoService.getOne(carreraMateria.getInstituto());
 		
 		for(CarreraMaterias materias: carreraMaterias) {
 			Carrera carrera= this.carreraService.getOne(materias.getCarrera());
@@ -127,18 +127,22 @@ public class CarreraController {
 					Materia materia=new Materia();
 					materia.setHoras(materiaModeladmin.getHoras());
 					materia.setNombre(materiaModeladmin.getNombre());
+					materia.setDisponible(1);
 					//PRIMERO DEBO GUARDAR EL PLAN Y DESPUES ASIGNARLE EL ID// PARA CUANDO ESTE 
 					PlanEstudio plan= new PlanEstudio();
 					plan.setPlan(materiaModeladmin.getPlan());
 					plan=this.planController.savePlanUngs(plan);
-				
 					materia.setPlan(plan.getId());
-				
+		
 					materia=this.materiaController.save(materia);
-					MateriasHasCarrera materiaHas= new MateriasHasCarrera(materia.getId(),carrera.getId());
-				
+					MateriasHasCarrera materiaHas= new MateriasHasCarrera(materia.getId(),carrera.getId(),1);
 					materiaHas=this.materiaHas.save(materiaHas);
 					}
+				else {
+					Materia materi= this.materiaController.getMateriaPorNombre(materiaModeladmin.getNombre());
+					this.materiaHas.actualizarMateriaDisponible(materi.getId(),carrera.getId(),materiaModeladmin.getDisponible());
+					
+				}
 			}
 			
 		}

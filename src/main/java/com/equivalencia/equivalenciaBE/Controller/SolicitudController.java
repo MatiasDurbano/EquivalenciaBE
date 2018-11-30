@@ -137,6 +137,7 @@ public class SolicitudController {
 		        	soli.setIdAlumno(alumno.getId());
 		        	soli.setIdFolio(folio.getId());
 		        	soli.setComentario(comentario.getId());
+		        	soli.setDisponible(0);
 		        	soli.setEstado(EstadoSolicitud.En_espera);
 		        	soli= this.solicitudService.save(soli);
 		        	
@@ -368,7 +369,9 @@ public class SolicitudController {
 									
 				solicitudModel.setAsignaturaEquivalente(ofrecimientos);
 				solicitudModel.setEstado(solicitud.getEstado());
-
+				solicitudModel.setDisponible(solicitud.getDisponible());
+				Comentario comentario = this.comentarioController.findComentario(solicitud.getComentario());
+				solicitudModel.setComentario(comentario.getComentario());
 				SolicitudesModel.add(solicitudModel);
 			}
 			SolicitudPost solicitudPost= new SolicitudPost();
@@ -380,6 +383,38 @@ public class SolicitudController {
 		
 		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),ret));
 
+	}
+	
+	@RequestMapping(value = "/actualizarDisponibilidad", method = RequestMethod.POST)
+	public String actualizarDisponibilidadSolicitud(@RequestBody String stringJson) throws IOException {
+			
+			this.mapper= new ObjectMapper();		
+			
+			this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			this.mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+			
+	        SolicitudPost solicitud=mapper.readValue(stringJson, SolicitudPost.class);
+	        Alumno alumno = this.getAlumno(solicitud.getAlumno());
+	        Carrera carrera= this.carreraController.getCarreraPorNombre(solicitud.getCarrera());
+	        
+	        //buscar alumno
+	        Alumno alumn= this.alumnoController.buscarPorEmail(alumno.getEmail());
+	        
+	        List<SolicitudModel> solicitudes = solicitud.getSolicitudesModel();
+	        
+	        for(SolicitudModel solicitudModel: solicitudes) {
+	        		        			        		
+	        	Solicitud soli = this.solicitudService.buscarSolicitudPorAlumnoyMateriaUngs(alumn.getId(),solicitudModel.getmateriaUngs());
+	        		  
+		        Comentario comentario = this.comentarioController.findComentario(soli.getComentario());
+	        	comentario.setComentario(solicitudModel.getComentario());
+		        soli.setDisponible(1);
+		        this.solicitudService.actualizarDisponibilidad(soli);
+			       
+	        	}
+	        	
+	        return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"actualizado"));
+			
 	}
 	
 	public AlumnoSolicitud guardarAlumnoSolicitud(long id) {
@@ -434,6 +469,7 @@ public class SolicitudController {
 		alumnoSolicitud.setLegajo(alumno.getLegajo());
 		alumnoSolicitud.setNombre(alumno.getNombre());
 		alumnoSolicitud.setTelefono(alumno.getNombre());
+		alumnoSolicitud.setCarrera(this.carreraController.getOne(alumno.getId()).getNombre());
 		Certificado certificado=this.certificadoController.getOne(alumno.getIdCertificados());
 		
 		
@@ -481,7 +517,7 @@ public class SolicitudController {
 		alumno.setEmail(alumnoSolicitud.getEmail());
 		alumno.setLegajo(alumnoSolicitud.getLegajo());
 		alumno.setNombre(alumnoSolicitud.getNombre());
-		alumno.setTelefono(alumnoSolicitud.getNombre());
+		alumno.setTelefono(alumnoSolicitud.getTelefono());
 		alumno.setIdCarrera(0);
 		alumno.setIdCertificados(0);
 		

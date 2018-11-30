@@ -10,4 +10,6 @@ public interface MateriasHasCarreraService {
 	
 	public List<MateriasHasCarrera> findMateriHasCarreraPorIdCarrera(long id);
 
+	void actualizarMateriaDisponible(long id, long id2, long disponible);
+
 }

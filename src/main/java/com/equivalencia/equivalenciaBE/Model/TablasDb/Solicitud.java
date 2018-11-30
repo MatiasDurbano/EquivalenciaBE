@@ -30,6 +30,8 @@ public class Solicitud extends ParentEntity {
 	@Column(name = "idcomentario")		
 	private long comentario;
 	
+	@Column(name = "disponible")		
+	private long disponible;
 	
 
 	public long getIdAlumno() {
@@ -70,5 +72,13 @@ public class Solicitud extends ParentEntity {
 
 	public void setComentario(long l) {
 		this.comentario = l;
+	}
+
+	public long getDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(long disponible) {
+		this.disponible = disponible;
 	}
 }

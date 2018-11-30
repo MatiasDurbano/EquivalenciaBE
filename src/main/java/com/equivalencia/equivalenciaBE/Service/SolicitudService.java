@@ -29,6 +29,8 @@ public interface SolicitudService {
 	void actualizarSolicitud(Solicitud soli);
 
 	List<Solicitud> buscarSolicitudPorAlumno(long id);
+
+	void actualizarDisponibilidad(Solicitud soli);
 	
 	
 }

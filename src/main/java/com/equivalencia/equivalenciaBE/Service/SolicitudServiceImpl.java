@@ -91,6 +91,12 @@ public class SolicitudServiceImpl implements SolicitudService {
 		return this.solicitudRepository.buscarPorAlumno(id);
 	}
 
+	@Override
+	public void actualizarDisponibilidad(Solicitud soli) {
+		this.solicitudRepository.actualizarDisponibilidad(soli.getId(),soli.getDisponible());
+		
+	}
+
 
 	
 	
