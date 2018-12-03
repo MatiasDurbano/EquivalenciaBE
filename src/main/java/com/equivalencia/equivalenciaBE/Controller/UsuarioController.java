@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.equivalencia.equivalenciaBE.Model.Administrador;
+import com.equivalencia.equivalenciaBE.Model.DocentePost;
 import com.equivalencia.equivalenciaBE.Model.UsuarioResponse;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Admin;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
@@ -68,6 +69,24 @@ public class UsuarioController {
 		}
 		
 	}
+	@RequestMapping(value = "/borrarDocente", method = RequestMethod.POST)
+	public RestResponse borrarDocente(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException {
+		
+		this.mapper= new ObjectMapper();
+		
+		DocentePost docente= this.mapper.readValue(usuarioJson,DocentePost.class);
+		
+		Docente doc = this.docenteController.encontrarPorEmail(docente.getEmail());
+		
+		this.usuarioService.borrar(doc.getUsuarioId());
+	
+		
+		return new RestResponse(HttpStatus.CONFLICT.value(),"usuario borrado");
+		
+		
+	}
+	
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String getUsuario(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException{
 		this.mapper= new ObjectMapper();
@@ -154,6 +173,9 @@ public class UsuarioController {
 		
 		if(!this.usuarioService.existe(user)&& !this.docenteController.existe(docente)) {
 			user.setDisponible(1);
+			user.setPassword(DigestUtils.md5Hex(docenteFirm.getPassword()));
+			user.setUsername(docenteFirm.getUsername());
+			user.setTipo("Docente");
 			user=this.usuarioService.save(user);
 			this.docenteController.guardar(docente,user.getId() );
 			String ret= this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"ok"));

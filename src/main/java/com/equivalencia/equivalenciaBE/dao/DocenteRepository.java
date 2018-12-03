@@ -27,7 +27,7 @@ public interface DocenteRepository extends JpaRepository<Docente, Long> {
 	@Query(value = "Select * FROM docente where docente.mail= :email ", nativeQuery = true)
 	Docente encontrarPorEMail(@Param("email")String email);
 
-	@Query(value = "Select * FROM docente where docente.idinstituto=:id ", nativeQuery = true)
+	@Query(value = "Select d.id,d.nombre,d.apellido,d.mail,d.tipo,d.idusuario,d.idinstituto FROM docente d, usuario u where d.idinstituto=:id and u.disponible=1 and u.id = d.idusuario ", nativeQuery = true)
 	List<Docente> buscarPorInstituto(@Param("id")long id);
 
 

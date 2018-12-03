@@ -19,6 +19,9 @@ public class DocentePost {
 	@JsonProperty( "asignaturas" )
 	private List<String> asignaturas;
 
+	@JsonProperty( "disponible" )
+	private long disponible;
+	
 	public String getEmail() {
 		return email;
 	}
@@ -49,6 +52,14 @@ public class DocentePost {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+
+	public long getDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(long disponible) {
+		this.disponible = disponible;
 	}
 
 
