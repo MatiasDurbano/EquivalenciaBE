@@ -1,27 +1,28 @@
-package com.equivalencia.equivalenciaBE.Model.TablasDb;
+package com.equivalencia.equivalenciaBE.Model;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(name = "instituto")
-@Access(AccessType.FIELD)
-public class Instituto extends ParentEntity {
-
-	private static final long serialVersionUID = 172092432402824749L;
-
+public class InstitutoPost {
+	
+	@JsonProperty( "id" )
+	private long id;
+	
 	@JsonProperty( "nombre" )
-	@Column(name = "nombre", nullable = false, length = 45)
 	private String nombre;
 
 	@JsonProperty( "disponible" )
 	private long disponible;
-	
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}

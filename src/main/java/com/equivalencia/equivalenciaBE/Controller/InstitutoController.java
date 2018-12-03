@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.equivalencia.equivalenciaBE.Model.InstitutoPost;
+import com.equivalencia.equivalenciaBE.Model.ListaInstituto;
 import com.equivalencia.equivalenciaBE.Model.MateriaPost;
+import com.equivalencia.equivalenciaBE.Model.SolicitudPost;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Alumno;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Carrera;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Instituto;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Materia;
@@ -22,6 +26,7 @@ import com.equivalencia.equivalenciaBE.Service.InstitutoService;
 import com.equivalencia.equivalenciaBE.Service.MateriaService;
 import com.equivalencia.equivalenciaBE.Utilities.RestResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -45,9 +50,45 @@ public class InstitutoController {
 	@RequestMapping(value = "/institutos", method = RequestMethod.GET)
 	public String getInstitutos() throws JsonProcessingException {
 		this.mapper= new ObjectMapper();
-		
+		this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		this.mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 		List<Instituto> ret = this.insitutoService.findAll();
 		return this.mapper.writeValueAsString(ret);
+		
+	}
+	
+	@RequestMapping(value = "/agregarInstituto", method = RequestMethod.POST)
+	public String agregarInstituto(@RequestBody String usuarioJson) throws IOException {
+		this.mapper= new ObjectMapper();
+		
+		this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		this.mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+		ListaInstituto institutos= mapper.readValue(usuarioJson, ListaInstituto.class);
+	      
+		for(InstitutoPost instituto: institutos.getInstitutos()) {
+			Instituto inst= new Instituto();
+			inst.setNombre(instituto.getNombre());
+			inst.setDisponible(1);
+			
+			this.insitutoService.guardar(inst);
+		}
+		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"agregados"));
+		
+	}
+	
+	@RequestMapping(value = "/borrarInstituto", method = RequestMethod.POST)
+	public String borrarInstituto(@RequestBody String usuarioJson) throws IOException {
+		this.mapper= new ObjectMapper();
+		
+		this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		this.mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+		ListaInstituto institutos= mapper.readValue(usuarioJson, ListaInstituto.class);
+      
+		for(InstitutoPost instituto: institutos.getInstitutos()) {
+			this.insitutoService.borrarInstituto(instituto.getNombre());
+		}
+		
+		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"borrados"));
 		
 	}
 	

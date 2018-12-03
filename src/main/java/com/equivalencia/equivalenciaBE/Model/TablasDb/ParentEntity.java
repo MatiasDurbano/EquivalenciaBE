@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @MappedSuperclass
@@ -19,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ParentEntity implements Serializable{
 
 	private static final long serialVersionUID = 8315760119915694862L;
-
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id", unique = true, nullable = false)

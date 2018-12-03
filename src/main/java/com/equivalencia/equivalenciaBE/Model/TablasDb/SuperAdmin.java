@@ -7,11 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "admin")
+@Table(name = "superadministrador")
 @Access(AccessType.FIELD)
-public class Admin extends ParentEntity{
+public class SuperAdmin extends ParentEntity {
 
-	private static final long serialVersionUID = -9066519226441645463L;
+	private static final long serialVersionUID = 6732257262144406885L;
 
 	@Column(name = "nombre", nullable = false, length = 45)
 	private String nombre;
@@ -27,9 +27,6 @@ public class Admin extends ParentEntity{
 	
 	@Column(name = "idusuario")
 	private long idUsuario;
-	
-	@Column(name = "idinstituto")
-	private long idInstituto;
 
 	public String getNombre() {
 		return nombre;
@@ -47,6 +44,14 @@ public class Admin extends ParentEntity{
 		this.apelido = apelido;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public int getTipo() {
 		return tipo;
 	}
@@ -59,26 +64,8 @@ public class Admin extends ParentEntity{
 		return idUsuario;
 	}
 
-	public void setIdUsuario(long l) {
-		this.idUsuario = l;
+	public void setIdUsuario(long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
-	public long getIdInstituto() {
-		return idInstituto;
-	}
-
-	public void setIdInstituto(long l) {
-		this.idInstituto = l;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	
-	
 }

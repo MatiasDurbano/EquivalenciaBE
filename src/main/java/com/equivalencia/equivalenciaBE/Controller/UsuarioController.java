@@ -3,6 +3,7 @@ package com.equivalencia.equivalenciaBE.Controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import com.equivalencia.equivalenciaBE.Model.Administrador;
 import com.equivalencia.equivalenciaBE.Model.UsuarioResponse;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Admin;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Docente;
+import com.equivalencia.equivalenciaBE.Model.TablasDb.SuperAdmin;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Usuario;
 import com.equivalencia.equivalenciaBE.Service.AdminService;
 import com.equivalencia.equivalenciaBE.Service.DocenteService;
@@ -42,7 +44,7 @@ public class UsuarioController {
 	protected ObjectMapper mapper;
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public RestResponse saveOrUpdate(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException {
+	public RestResponse crearUsuario(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException {
 		
 		this.mapper= new ObjectMapper();
 		
@@ -51,11 +53,21 @@ public class UsuarioController {
 		if (!this.validate(usuario)) {
 			return new RestResponse(HttpStatus.NOT_ACCEPTABLE.value(),"no");
 		}
-		this.usuarioService.save(usuario);
-		return new RestResponse(HttpStatus.OK.value(),"ok");
+		
+		if(!this.existe(usuario)) {
+			usuario.setDisponible(1);
+			String a= usuario.getPassword();
+			usuario.setPassword(DigestUtils.md5Hex(a));
+			this.usuarioService.save(usuario);
+			
+			return new RestResponse(HttpStatus.OK.value(),"ok");
+		}
+		else {
+			return new RestResponse(HttpStatus.CONFLICT.value(),"Usuario ya existente");
+				
+		}
 		
 	}
-
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String getUsuario(@RequestBody String usuarioJson) throws JsonParseException, JsonMappingException, IOException{
 		this.mapper= new ObjectMapper();
@@ -64,9 +76,11 @@ public class UsuarioController {
 		
 		Usuario usuario= this.mapper.readValue(usuarioJson, Usuario.class);
 		List<Usuario> usuarios= this.usuarioService.findAll();
-		
+		String a=usuario.getPassword();
+		usuario.setPassword(DigestUtils.md5Hex(a));
 		if(usuarios.contains(usuario)) {
 			Usuario user = this.buscarUsuario(usuario, usuarios);
+			if(user.getDisponible()==1) {
 			
 			switch(user.getTipo()) {
 				case "Docente" :
@@ -88,10 +102,26 @@ public class UsuarioController {
 						ret.setEmail(admin.getEmail());
 						
 						break;
+						
+						
+				case "SuperAdmin":
+						System.out.println(user.getId());
+						SuperAdmin superAdmin = this.adminController.obtenerSuperAdmin(user.getId());
+						ret.setTipo(3);
+						ret.setNombre(superAdmin.getNombre());
+						ret.setApellido(superAdmin.getApelido());
+						ret.setEmail(superAdmin.getEmail());
+						
+						break;
+				}
+			
+			
+				return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),ret));
 			}
 			
-			return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),ret));
-			
+			else {
+				return this.mapper.writeValueAsString(new RestResponse(HttpStatus.BAD_REQUEST.value(),ret));
+			}
 		}
 		
 		else {
@@ -123,6 +153,7 @@ public class UsuarioController {
 		docenteFirm.buildUsuario(user);
 		
 		if(!this.usuarioService.existe(user)&& !this.docenteController.existe(docente)) {
+			user.setDisponible(1);
 			user=this.usuarioService.save(user);
 			this.docenteController.guardar(docente,user.getId() );
 			String ret= this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"ok"));
@@ -166,6 +197,18 @@ public class UsuarioController {
 				docente.getMail().equals(""))
 			isValid = false;
 		return isValid;
+		
+	}
+
+	public Usuario guardarUsuario(Usuario usuario) {
+		return this.usuarioService.save(usuario);
+	}
+
+	public boolean existe(Usuario usuario) {
+		return this.usuarioService.existe(usuario);
+	}
+	public void borrar(long idUsuario) {
+		this.usuarioService.borrar(idUsuario);
 		
 	}
 	

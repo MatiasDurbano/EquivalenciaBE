@@ -8,6 +8,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.equivalencia.equivalenciaBE.Model.TablasDb.Alumno;
 import com.equivalencia.equivalenciaBE.Properties.AbsolutFileSearch;
 import com.equivalencia.equivalenciaBE.Properties.DataConfig;
 import com.equivalencia.equivalenciaBE.Properties.PropertiesFileSearch;
@@ -78,10 +79,30 @@ public class EnviadorMail {
 	        transport.connect("smtp.gmail.com", this.email, this.clave);
 	        transport.sendMessage(message, message.getAllRecipients());
 	        transport.close();
+	        
 	    }
 	    catch (MessagingException me) {
 	        me.printStackTrace();   //Si se produce un error
 	    }
+	}
+
+	public void enviarEmailDeFaltante(String mail, Alumno alumno,String materia) {
+		String cuerpo="El alumno "+alumno.getNombre()+" "+alumno.getApellido()+" con legajo: "+alumno.getLegajo()+" le falta una resolución para finalizar su solicitud de equivalencia y es en la materia "+ materia ;
+		String asunto="Alumno terminando trámite";
+	    try {
+	    	message.setFrom(new InternetAddress(this.email));
+	        message.addRecipients(Message.RecipientType.TO, mail);   //Se podrían añadir varios de la misma manera
+	        message.setSubject(asunto);
+	        message.setText(cuerpo);
+	        Transport transport = session.getTransport("smtp");
+	        transport.connect("smtp.gmail.com", this.email, this.clave);
+	        transport.sendMessage(message, message.getAllRecipients());
+	        transport.close();
+	    }
+	    catch (MessagingException me) {
+	        me.printStackTrace();   //Si se produce un error
+	    }
+		
 	}
 	
 }

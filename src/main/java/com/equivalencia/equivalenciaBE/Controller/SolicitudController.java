@@ -126,8 +126,6 @@ public class SolicitudController {
 	        			idsOfrecimiento.add(this.solicitudService.save(solicitudOfrecimiento).getId());
 	        			
 	        		}
-	        		
-	        		
 	        		//busco  id de materia de la ungss
 	        		Materia materia=this.materiaController.getMateriaPorNombre(solicitudModel.getmateriaUngs());
 	        		
@@ -137,7 +135,7 @@ public class SolicitudController {
 		        	soli.setIdAlumno(alumno.getId());
 		        	soli.setIdFolio(folio.getId());
 		        	soli.setComentario(comentario.getId());
-		        	soli.setDisponible(0);
+		        	soli.setDisponible(1);
 		        	soli.setEstado(EstadoSolicitud.En_espera);
 		        	soli= this.solicitudService.save(soli);
 		        	
@@ -206,14 +204,16 @@ public class SolicitudController {
 		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.NOT_FOUND.value(),"No encontrado"));
 	}
 	
+	//-------------------------------------------------
+	
 	@RequestMapping(value = "/getPorMateriasDocente", method = RequestMethod.POST)
-	public String getSolicitudesMateria(@RequestBody String solicitudJson) throws JsonParseException, JsonMappingException, IOException {
+	public String getSolicitudesMateria2(@RequestBody String solicitudJson) throws JsonParseException, JsonMappingException, IOException {
 		this.mapper= new ObjectMapper();
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 		
 		MateriasDocente materia= this.mapper.readValue(solicitudJson, MateriasDocente.class);
 		
-		List<SolicitudMateriaAlumno> ret = new ArrayList<SolicitudMateriaAlumno>();
+		List<SolicitudPost> ret = new ArrayList<SolicitudPost>();
 		
 		for(String nombreMateria: materia.getMaterias()) {
 			Materia mat = this.materiaController.getMateriaPorNombre(nombreMateria);
@@ -226,14 +226,15 @@ public class SolicitudController {
 					List<SolicitudHasMateria> materiasOfrecidas= new ArrayList<SolicitudHasMateria>();
 					materiasOfrecidas=this.materiaController.getSolicitudHasMateria(soli.getId());
 				
-					SolicitudMateriaAlumno solicitudMateriaAlumno= new SolicitudMateriaAlumno();
-					solicitudMateriaAlumno.setAlumno(guardarModel(soli.getIdAlumno()));
+					System.out.println(soli.getId()+ " id soli");
+					SolicitudPost solicitudPost= new SolicitudPost();
+					solicitudPost.setAlumno(this.guardarAlumnoSolicitud(soli.getIdAlumno()));
 				
-					List<AsignaturasUNGS> asignaturasUNGS=new ArrayList<AsignaturasUNGS>();
+					List<SolicitudModel> solicitudesModel=new ArrayList<SolicitudModel>();
 				
-					AsignaturasUNGS asignaturaUNGS=new AsignaturasUNGS();
+					SolicitudModel solicitudModel=new SolicitudModel();
 				
-					asignaturaUNGS.setMateriaUngs(nombreMateria);
+					solicitudModel.setmateriaUngs(nombreMateria);
 			
 					//solicitudMateriaAlumno.setComentario(this.comentarioController.findComentario(soli.getId()));
 				
@@ -257,18 +258,19 @@ public class SolicitudController {
 						}
 					
 					
-					asignaturaUNGS.setEquivalencias(ofrecimientos);
-					asignaturasUNGS.add(asignaturaUNGS);
-					solicitudMateriaAlumno.setAsignaturasUNGS(asignaturasUNGS);
-					ret.add(solicitudMateriaAlumno);
+					solicitudModel.setAsignaturaEquivalente(ofrecimientos);
+					solicitudesModel.add(solicitudModel);
+					solicitudPost.setsolicitudesModel(solicitudesModel);
+					ret.add(solicitudPost);
 					}
 					
 			}
 		}
-		
 		return this.mapper.writeValueAsString(ret);
 		
 	}
+	
+	//-------------------------------------------------
 	
 	@RequestMapping(value = "/actualizarSolcitud", method = RequestMethod.POST)
 	public String actualizarSolicitud(@RequestBody String stringJson) throws IOException {
@@ -287,6 +289,7 @@ public class SolicitudController {
 	        
 	        List<SolicitudModel> solicitudes = solicitud.getSolicitudesModel();
 	        
+	        //entra solo una vez
 	        for(SolicitudModel solicitudModel: solicitudes) {
 	        		        			        		
 	        	Solicitud soli = this.solicitudService.buscarSolicitudPorAlumnoyMateriaUngs(alumn.getId(),solicitudModel.getmateriaUngs());
@@ -315,11 +318,27 @@ public class SolicitudController {
 	        	
 	        	
 		        this.solicitudService.actualizarSolicitud(soli);
-		       
-	        	}
+		        System.out.println(" ENVIANDO EMAIL");
+		        this.avisarDocentesFaltantes(alumn, solicitudModel.getmateriaUngs());
+	        	
+		        }
 	        	
 	        	return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"actualizado"));
 			
+	}
+	
+	public void avisarDocentesFaltantes(Alumno alumno, String materia) {
+		
+		List <Solicitud> solicitudes= this.solicitudService.buscarSolicitudPorAlumnoEnEspera(alumno.getId());
+		this.enviadorMail=new EnviadorMail();
+		if(solicitudes.size()==1) {
+			Materia mat=this.materiaController.getMateriaPorNombre(materia);
+			List<Docente> docentes= this.materiaController.BuscarMateriasDeDocente(mat.getId());
+			for(Docente docente : docentes) {
+				this.enviadorMail.enviarEmailDeFaltante(docente.getMail(),alumno,mat.getNombre());
+			}
+		}
+		
 	}
 	
 	
@@ -469,7 +488,7 @@ public class SolicitudController {
 		alumnoSolicitud.setLegajo(alumno.getLegajo());
 		alumnoSolicitud.setNombre(alumno.getNombre());
 		alumnoSolicitud.setTelefono(alumno.getNombre());
-		alumnoSolicitud.setCarrera(this.carreraController.getOne(alumno.getId()).getNombre());
+		alumnoSolicitud.setCarrera(this.carreraController.getOne(alumno.getIdCarrera()).getNombre());
 		Certificado certificado=this.certificadoController.getOne(alumno.getIdCertificados());
 		
 		

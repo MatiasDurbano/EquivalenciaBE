@@ -43,6 +43,11 @@ public class AlumnoServiceImpl implements AlumnoService {
 	public List<Alumno> traerPorInstituto(long id) {
 		return this.alumnoRepository.traerPorInstituto(id);
 	}
+
+	@Override
+	public List<Alumno> getAll() {
+		return this.alumnoRepository.findAll();
+	}
 	
 	
 	

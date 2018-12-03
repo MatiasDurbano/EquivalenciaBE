@@ -2,6 +2,7 @@ package com.equivalencia.equivalenciaBE.Service;
 
 import java.util.List;
 
+
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Comentario;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Solicitud;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.SolicitudOfrecimiento;
@@ -31,6 +32,8 @@ public interface SolicitudService {
 	List<Solicitud> buscarSolicitudPorAlumno(long id);
 
 	void actualizarDisponibilidad(Solicitud soli);
+
+	List<Solicitud> buscarSolicitudPorAlumnoEnEspera(long id);
 	
 	
 }

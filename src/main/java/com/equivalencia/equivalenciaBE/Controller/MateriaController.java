@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.equivalencia.equivalenciaBE.Model.CarreraMaterias;
 import com.equivalencia.equivalenciaBE.Model.Email;
 import com.equivalencia.equivalenciaBE.Model.InstitutosUngs;
+import com.equivalencia.equivalenciaBE.Model.MateriaModelAdmin;
 import com.equivalencia.equivalenciaBE.Model.MateriasDocente;
 import com.equivalencia.equivalenciaBE.Model.SolicitudPost;
 import com.equivalencia.equivalenciaBE.Model.TablasDb.Carrera;
@@ -23,8 +26,10 @@ import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.DocenteHasMater
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateria;
 import com.equivalencia.equivalenciaBE.Model.TablasIntermediasDb.SolicitudHasMateriasUngs;
 import com.equivalencia.equivalenciaBE.Service.MateriaService;
+import com.equivalencia.equivalenciaBE.Service.MateriasHasCarreraService;
 import com.equivalencia.equivalenciaBE.Service.SolicitudHasMateriaOfrecidaService;
 import com.equivalencia.equivalenciaBE.Service.SolicitudHasMateriaUngsService;
+import com.equivalencia.equivalenciaBE.Utilities.RestResponse;
 import com.equivalencia.equivalenciaBE.dao.SolicitudOfrecimientoRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,8 +50,13 @@ public class MateriaController {
 	protected SolicitudHasMateriaUngsService solicitudHasMateriaUngs;
 	
 	@Autowired 
+	protected MateriasHasCarreraService materiaHasCarreraService;
+	
+	@Autowired 
 	protected DocenteController docenteController;
 	
+	@Autowired 
+	protected CarreraController carreraController;
 	
 	
 	protected ObjectMapper mapper;
@@ -114,6 +124,22 @@ public class MateriaController {
 		
 		return this.mapper.writeValueAsString(materiaDocente);
 	}
+	
+	@RequestMapping(value = "/actualizarDisponibilidadMateria", method = RequestMethod.POST)
+	public String actualizarDisponibilidad(@RequestBody String solicitudJson) throws IOException {
+		this.mapper= new ObjectMapper();
+		
+		CarreraMaterias carreraMaterias = mapper.readValue(solicitudJson, CarreraMaterias.class);
+		List<MateriaModelAdmin> materias= carreraMaterias.getMaterias();
+		Carrera carrera = this.carreraController.getCarreraPorNombre(carreraMaterias.getCarrera());
+		for(MateriaModelAdmin materia :materias) {
+			Materia mat= this.getMateriaPorNombre(materia.getNombre());
+			this.materiaHasCarreraService.actualizarMateriaDisponible(mat.getId(), carrera.getId(), materia.getDisponible());
+		}
+		
+		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"actualizado"));
+	}
+
 
 
 	public List<Docente> BuscarMateriasDeDocente(long id) {

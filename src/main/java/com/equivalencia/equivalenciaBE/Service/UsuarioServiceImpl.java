@@ -32,5 +32,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		return false;
 	}
+
+	@Override
+	public void borrar(long idUsuario) {
+		this.usuarioRepository.borrar(idUsuario);
+		
+	}
 	
 }

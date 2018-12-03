@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.equivalencia.equivalenciaBE.Model.CarreraAngular;
 import com.equivalencia.equivalenciaBE.Model.CarreraMaterias;
+import com.equivalencia.equivalenciaBE.Model.CarreraModel;
+import com.equivalencia.equivalenciaBE.Model.CarreraPost;
 import com.equivalencia.equivalenciaBE.Model.CarrerasMateriasPost;
 import com.equivalencia.equivalenciaBE.Model.InstitutosUngs;
+import com.equivalencia.equivalenciaBE.Model.ListaCarrera;
 import com.equivalencia.equivalenciaBE.Model.MateriaModel;
 import com.equivalencia.equivalenciaBE.Model.MateriaModelAdmin;
 import com.equivalencia.equivalenciaBE.Model.PostCarreraMateria;
@@ -74,7 +78,18 @@ public class CarreraController {
 		}
 		return this.mapper.writeValueAsString(institutosCarreras);
 	}
-
+	
+	@RequestMapping(value = "/actualizarDisponibilidadCarrera", method = RequestMethod.POST)
+	public String actualizarDisponibilidad(@RequestBody String solicitudJson) throws IOException {
+		ListaCarrera listaCarrera= this.mapper.readValue(solicitudJson, ListaCarrera.class);
+		
+		List<CarreraMaterias> carreras= listaCarrera.getCarreras();	
+		
+		for(CarreraMaterias carrera : carreras) {
+			this.carreraService.actualizarDisponibilidad(carrera.getCarrera(), carrera.getDisponible());
+		}
+		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"Actualizado"));
+	}
 	
 	
 	@RequestMapping(value = "/carrerasmaterias", method = RequestMethod.POST)
@@ -127,7 +142,6 @@ public class CarreraController {
 					Materia materia=new Materia();
 					materia.setHoras(materiaModeladmin.getHoras());
 					materia.setNombre(materiaModeladmin.getNombre());
-					materia.setDisponible(1);
 					//PRIMERO DEBO GUARDAR EL PLAN Y DESPUES ASIGNARLE EL ID// PARA CUANDO ESTE 
 					PlanEstudio plan= new PlanEstudio();
 					plan.setPlan(materiaModeladmin.getPlan());
@@ -150,7 +164,49 @@ public class CarreraController {
 		return new RestResponse(HttpStatus.OK.value(),"ok");
 		
 	}
+	@RequestMapping(value = "/guardarCarrera", method = RequestMethod.POST)
+	public String guardarCarrera(@RequestBody String solicitudJson) throws IOException {
+		this.mapper= new ObjectMapper();
+		
+		CarreraPost carreras =  this.mapper.readValue(solicitudJson, CarreraPost.class);
+		Instituto inst= this.insitutoService.getOne(carreras.getInstituto());
+		
+		for(CarreraAngular carrera :carreras.getCarreras()) {
+			Carrera carr=new Carrera();
+			carr.setNombre(carrera.getNombre());
+			carr.setIdinstituto(inst.getId());
+			carr.setIdUniversidad(1);
+			carr.setDisponible(1);
+			this.carreraService.save(carr);
+		}
+		
+		return null;
+	}
 	
+	@RequestMapping(value = "/borrarCarrera", method = RequestMethod.POST)
+	public String borrarCarrera(@RequestBody String solicitudJson) throws IOException {
+		this.mapper= new ObjectMapper();
+		
+		CarreraPost carreras =  this.mapper.readValue(solicitudJson, CarreraPost.class);
+		Instituto inst= this.insitutoService.getOne(carreras.getInstituto());
+		
+		for(CarreraAngular carrera :carreras.getCarreras()) {
+			this.carreraService.borrarCarrera(carrera.getNombre());
+		}
+		
+		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),"ok"));
+	}
+	
+	@RequestMapping(value = "/carreraPorInstituto", method = RequestMethod.POST)
+	public String obtenerCarreraPorInstuto(@RequestBody String solicitudJson) throws IOException {
+		this.mapper= new ObjectMapper();
+		
+		Instituto instituto= this.insitutoService.getOne(solicitudJson);
+		
+		List<Carrera> carrera = this.carreraService.buscarPorInstituto(instituto.getId());
+		
+		return this.mapper.writeValueAsString(new RestResponse(HttpStatus.OK.value(),carrera));
+	}
 	
 	
 	private List<MateriasHasCarrera> findMateriasHasCarreraPorCarrera(Carrera carrera){

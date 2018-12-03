@@ -42,5 +42,20 @@ public class CarreraServiceImpl implements CarreraService {
 		
 	}
 
+	@Override
+	public void actualizarDisponibilidad(String carrera, long disponible) {
+		 this.carreraRepository.actualizarDisponiblidad(carrera, disponible);
+	}
+
+	@Override
+	public Carrera save(Carrera carr) {
+		return this.carreraRepository.save(carr);
+	}
+
+	@Override
+	public void borrarCarrera(String nombre) {
+		this.carreraRepository.borrarCarrera(nombre);
+	}
+
 	
 }

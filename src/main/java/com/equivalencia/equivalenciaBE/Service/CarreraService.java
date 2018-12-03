@@ -16,4 +16,10 @@ public interface CarreraService {
 
 	List<Carrera> buscarPorInstituto(long l);
 
+	void actualizarDisponibilidad(String carrera, long disponible);
+
+	Carrera save(Carrera carr);
+
+	void borrarCarrera(String nombre);
+
 }

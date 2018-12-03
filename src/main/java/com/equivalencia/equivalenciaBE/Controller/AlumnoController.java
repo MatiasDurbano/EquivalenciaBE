@@ -40,4 +40,9 @@ public class AlumnoController {
 		return this.alumnoService.traerPorInstituto(id);
 	}
 
+
+	public List<Alumno> getAll() {
+		return this.alumnoService.getAll();
+	}
+
 }

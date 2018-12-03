@@ -22,8 +22,6 @@ public class Materia extends ParentEntity {
 	@Column(name = "idplan")
 	private long plan;
 	
-	@Column(name = "disponible")
-	private long disponible;
 
 	
 	public String getNombre() {
@@ -49,14 +47,6 @@ public class Materia extends ParentEntity {
 
 	public void setPlan(long l) {
 		this.plan = l;
-	}
-
-	public long getDisponible() {
-		return disponible;
-	}
-
-	public void setDisponible(long disponible) {
-		this.disponible = disponible;
 	}
 
 }

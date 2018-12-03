@@ -34,6 +34,11 @@ public class AdminServiceImpl implements AdminService {
 	public Admin buscarPorEmail(String email) {
 		return this.adminRepository.buscarPorEmail(email);
 	}
+
+	@Override
+	public Admin buscarPorEmailSuperAdmin(String email) {
+		return this.adminRepository.buscarPorEmailSuperAdmin(email);
+	}
 	
 
 }

@@ -16,6 +16,7 @@ public class CarreraModel{
 	private String nombre;
 	
 	private List<Materia> Materias;
+	
 
 	public String getNombre() {
 		return nombre;

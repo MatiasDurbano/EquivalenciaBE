@@ -12,4 +12,10 @@ public interface InstitutoService {
 
 	Instituto getOne(long id);
 
+	boolean existe(String nombre);
+
+	Instituto guardar(Instituto instituto);
+
+	void borrarInstituto(String nombre);
+
 }

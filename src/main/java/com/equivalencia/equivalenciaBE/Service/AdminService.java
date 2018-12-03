@@ -16,5 +16,7 @@ public interface AdminService {
 
 	Admin buscarPorEmail(String email);
 
+	Admin buscarPorEmailSuperAdmin(String email);
+
 	
 }

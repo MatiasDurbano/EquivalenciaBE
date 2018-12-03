@@ -15,6 +15,8 @@ public interface AlumnoService {
 	Alumno buscarPorEmail(String email);
 
 	List<Alumno> traerPorInstituto(long id);
+
+	List<Alumno> getAll();
 	
 
 }

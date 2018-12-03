@@ -15,6 +15,9 @@ public class CarreraMaterias {
 	@JsonDeserialize(as=ArrayList.class, contentAs=MateriaModelAdmin.class)
 	private List<MateriaModelAdmin> materias;
 	
+	@JsonProperty( "disponible" )
+	private long disponible;
+	
 	public CarreraMaterias() {
 		 materias= new ArrayList<MateriaModelAdmin>();
 	}
@@ -30,6 +33,14 @@ public class CarreraMaterias {
 	}
 	public void setMaterias(List<MateriaModelAdmin> materiaModelAdmin) {
 		this.materias = materiaModelAdmin;
+	}
+
+	public long getDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(long disponible) {
+		this.disponible = disponible;
 	}
 	
 

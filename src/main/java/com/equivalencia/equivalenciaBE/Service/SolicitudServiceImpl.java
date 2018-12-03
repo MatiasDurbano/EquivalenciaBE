@@ -97,6 +97,11 @@ public class SolicitudServiceImpl implements SolicitudService {
 		
 	}
 
+	@Override
+	public List<Solicitud> buscarSolicitudPorAlumnoEnEspera(long id) {
+		return this.solicitudRepository.buscarSolicitudPorAlumnoEnEspera(id);
+	}
+
 
 	
 	

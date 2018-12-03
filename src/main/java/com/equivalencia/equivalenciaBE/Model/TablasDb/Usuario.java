@@ -23,6 +23,10 @@ public class Usuario extends ParentEntity  {
 	
 	@Column(name = "tipo", nullable = false, length= 7)
 	private String tipo;
+	
+	//1 disponible , 0 no disponible
+	@Column(name = "disponible")
+	private long disponible;
 
 	public String getUsername() {
 		return username;
@@ -66,6 +70,14 @@ public class Usuario extends ParentEntity  {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public long getDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(long disponible) {
+		this.disponible = disponible;
 	} 
 	
 }

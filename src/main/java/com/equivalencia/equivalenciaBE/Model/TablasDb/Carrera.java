@@ -20,7 +20,10 @@ public class Carrera extends ParentEntity {
 	private int idUniversidad;
 	
 	@Column(name = "idinstituto")
-	private int idinstituto;
+	private long idinstituto;
+	
+	@Column(name = "disponible")
+	private long disponible;
 
 	public String getNombre() {
 		return nombre;
@@ -38,12 +41,20 @@ public class Carrera extends ParentEntity {
 		this.idUniversidad = idUniversidad;
 	}
 
-	public int getIdinstituto() {
+	public long getIdinstituto() {
 		return idinstituto;
 	}
 
-	public void setIdinstituto(int idinstituto) {
-		this.idinstituto = idinstituto;
+	public void setIdinstituto(long l) {
+		this.idinstituto = l;
+	}
+
+	public long getDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(long disponible) {
+		this.disponible = disponible;
 	}
 
 }
